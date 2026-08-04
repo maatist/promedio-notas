@@ -2,7 +2,7 @@
   "id": "FEAT-002",
   "type": "feat",
   "description": "Backend API implementation - Authentication system with JWT, and full CRUD API for periods, subjects (simple and composite), subject components, and grades. Includes input validation with Zod and proper error handling.",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "Create packages/backend/src/middleware/auth.ts - JWT verification middleware that extracts userId from token and attaches to request",
     "Create packages/backend/src/routes/auth.ts - POST /api/auth/register (username, password with bcrypt hashing), POST /api/auth/login (credential verification, JWT token generation), GET /api/auth/me (return current user info)",
@@ -34,5 +34,5 @@
     "Start the backend server and verify API endpoints respond correctly with curl/httpie"
   ],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "All 18 unit tests pass. Full monorepo build succeeds. Prisma client needs to be generated with DATABASE_URL env var set (can be a placeholder URL). Routes use /api prefix: /api/auth/*, /api/periods, /api/periods/:periodId/subjects, /api/components/:componentId/grades, /api/subjects/:id, /api/grades/:id. Simple subjects get a default 'General' component. The grade calculator ignores null grade values when computing averages."
 }
