@@ -2,7 +2,7 @@
   "id": "FEAT-002",
   "type": "feat",
   "description": "Backend API implementation - Authentication system with JWT, and full CRUD API for periods, subjects (simple and composite), subject components, and grades. Includes input validation with Zod and proper error handling.",
-  "status": "pending",
+  "status": "in_progress",
   "steps": [
     "Create packages/backend/src/middleware/auth.ts - JWT verification middleware that extracts userId from token and attaches to request",
     "Create packages/backend/src/routes/auth.ts - POST /api/auth/register (username, password with bcrypt hashing), POST /api/auth/login (credential verification, JWT token generation), GET /api/auth/me (return current user info)",

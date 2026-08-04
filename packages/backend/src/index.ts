@@ -1,6 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import authRoutes from './routes/auth.js';
+import periodRoutes from './routes/periods.js';
+import subjectRoutes from './routes/subjects.js';
+import gradeRoutes from './routes/grades.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 dotenv.config();
 
@@ -19,11 +24,14 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// TODO: Register routes
-// app.use('/api/auth', authRoutes);
-// app.use('/api/periods', periodRoutes);
-// app.use('/api/subjects', subjectRoutes);
-// app.use('/api/grades', gradeRoutes);
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/periods', periodRoutes);
+app.use('/api', subjectRoutes);
+app.use('/api', gradeRoutes);
+
+// Global error handler
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
