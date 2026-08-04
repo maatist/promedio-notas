@@ -1,0 +1,21 @@
+{
+  "id": "FEAT-006",
+  "type": "docs",
+  "description": "Create comprehensive README.md, scripts/setup.sh setup script, and update .env.example at root level",
+  "status": "in_progress",
+  "steps": [
+    "Create README.md at root with full project documentation in Spanish",
+    "Create scripts/setup.sh that verifies .env, installs deps, generates Prisma client, runs migrations",
+    "Ensure .env.example at root has the correct template values as specified"
+  ],
+  "acceptance_criteria": [
+    "README.md exists at root with all 13 sections requested",
+    "scripts/setup.sh is executable and handles .env creation, npm install, prisma generate, prisma migrate",
+    ".env.example at root contains DATABASE_URL and JWT_SECRET with the specified placeholder values"
+  ],
+  "verification": [
+    "README.md is well-formatted markdown",
+    "scripts/setup.sh has proper bash shebang and is executable"
+  ],
+  "blocked_reason": null
+}
