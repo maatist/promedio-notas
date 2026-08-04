@@ -2,7 +2,7 @@
   "id": "FEAT-003",
   "type": "feat",
   "description": "Frontend implementation - Complete React SPA with authentication flow, dashboard showing all subjects with grades and averages, inline grade editing, modal for creating/editing subjects (supporting composite subjects with configurable component weights), dark/light mode toggle, and pastel pink/purple themed UI.",
-  "status": "pending",
+  "status": "in_progress",
   "steps": [
     "Create packages/frontend/src/contexts/AuthContext.tsx - React context providing login, register, logout functions, current user state, and JWT token management (stored in localStorage with axios interceptor for Authorization header)",
     "Create packages/frontend/src/contexts/ThemeContext.tsx - Dark/light mode context with toggle function, persists preference in localStorage, applies 'dark' class to document root",
