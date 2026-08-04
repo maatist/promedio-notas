@@ -4,7 +4,7 @@
   "framework": "vite",
   "functions": {
     "api/index.ts": {
-      "includeFiles": "packages/backend/**"
+      "includeFiles": "packages/backend/dist/**"
     }
   },
   "rewrites": [

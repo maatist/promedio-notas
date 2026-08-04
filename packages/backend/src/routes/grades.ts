@@ -1,9 +1,9 @@
 import { Router, Response } from 'express';
-import { prisma } from '../lib/prisma.js';
-import { authenticate, AuthRequest } from '../middleware/auth.js';
-import { validate } from '../middleware/validate.js';
-import { createGradeSchema, updateGradeSchema } from '../validators/schemas.js';
-import { validateWeightsTotal } from '../services/gradeCalculator.js';
+import { prisma } from '../lib/prisma';
+import { authenticate, AuthRequest } from '../middleware/auth';
+import { validate } from '../middleware/validate';
+import { createGradeSchema, updateGradeSchema } from '../validators/schemas';
+import { validateWeightsTotal } from '../services/gradeCalculator';
 
 const router = Router();
 

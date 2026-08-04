@@ -3,7 +3,7 @@ import {
   calculateComponentAverage,
   calculateSubjectAverage,
   validateWeightsTotal,
-} from '../services/gradeCalculator.js';
+} from '../services/gradeCalculator';
 
 describe('gradeCalculator', () => {
   describe('calculateComponentAverage', () => {

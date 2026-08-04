@@ -2,11 +2,11 @@ import { Router, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import rateLimit from 'express-rate-limit';
-import { prisma } from '../lib/prisma.js';
-import { getJwtSecret } from '../lib/jwt.js';
-import { validate } from '../middleware/validate.js';
-import { authenticate, AuthRequest } from '../middleware/auth.js';
-import { registerSchema, loginSchema } from '../validators/schemas.js';
+import { prisma } from '../lib/prisma';
+import { getJwtSecret } from '../lib/jwt';
+import { validate } from '../middleware/validate';
+import { authenticate, AuthRequest } from '../middleware/auth';
+import { registerSchema, loginSchema } from '../validators/schemas';
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { getJwtSecret } from '../lib/jwt.js';
+import { getJwtSecret } from '../lib/jwt';
 
 export interface AuthRequest extends Request {
   userId?: string;

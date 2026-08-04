@@ -1,12 +1,12 @@
 import { Router, Response } from 'express';
-import { prisma } from '../lib/prisma.js';
-import { authenticate, AuthRequest } from '../middleware/auth.js';
-import { validate } from '../middleware/validate.js';
-import { createSubjectSchema, updateSubjectSchema } from '../validators/schemas.js';
+import { prisma } from '../lib/prisma';
+import { authenticate, AuthRequest } from '../middleware/auth';
+import { validate } from '../middleware/validate';
+import { createSubjectSchema, updateSubjectSchema } from '../validators/schemas';
 import {
   calculateComponentAverage,
   calculateSubjectAverage,
-} from '../services/gradeCalculator.js';
+} from '../services/gradeCalculator';
 
 const router = Router();
 
