@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import rateLimit from 'express-rate-limit';
 import { prisma } from '../lib/prisma.js';
 import { getJwtSecret } from '../lib/jwt.js';
 import { validate } from '../middleware/validate.js';
@@ -9,13 +10,22 @@ import { registerSchema, loginSchema } from '../validators/schemas.js';
 
 const router = Router();
 
+// Rate limit for auth endpoints: 5 attempts per minute per IP
+const authLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 5, // limit each IP to 5 requests per windowMs
+  message: { success: false, error: 'Too many attempts, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 function generateToken(userId: string): string {
   const secret = getJwtSecret();
   return jwt.sign({ userId }, secret, { expiresIn: '7d' });
 }
 
 // POST /api/auth/register
-router.post('/register', validate(registerSchema), async (req: AuthRequest, res: Response) => {
+router.post('/register', authLimiter, validate(registerSchema), async (req: AuthRequest, res: Response) => {
   try {
     const { username, password } = req.body;
 
@@ -54,7 +64,7 @@ router.post('/register', validate(registerSchema), async (req: AuthRequest, res:
 });
 
 // POST /api/auth/login
-router.post('/login', validate(loginSchema), async (req: AuthRequest, res: Response) => {
+router.post('/login', authLimiter, validate(loginSchema), async (req: AuthRequest, res: Response) => {
   try {
     const { username, password } = req.body;
 

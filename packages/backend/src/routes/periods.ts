@@ -9,22 +9,16 @@ const router = Router();
 // All period routes require authentication
 router.use(authenticate);
 
-// GET /api/periods
+// GET /api/periods - returns only period metadata (id, name, createdAt)
 router.get('/', async (req: AuthRequest, res: Response) => {
   try {
     const periods = await prisma.period.findMany({
       where: { userId: req.userId },
       orderBy: { createdAt: 'desc' },
-      include: {
-        subjects: {
-          include: {
-            components: {
-              include: {
-                grades: { orderBy: { order: 'asc' } },
-              },
-            },
-          },
-        },
+      select: {
+        id: true,
+        name: true,
+        createdAt: true,
       },
     });
 

@@ -1,0 +1,25 @@
+{
+  "id": "FEAT-005",
+  "type": "fix",
+  "description": "Address second-round review issues: JWT validation in serverless, import path fix, rate limiting, and period over-fetching",
+  "status": "in_progress",
+  "steps": [
+    "Move getJwtSecret() call to module level in packages/backend/src/lib/jwt.ts so it executes on first import",
+    "Fix api/index.ts import path to use .ts extension for @vercel/node compatibility",
+    "Install express-rate-limit and add rate limiting to auth routes (5 attempts/min/IP)",
+    "Simplify GET /api/periods to return only period metadata (id, name, createdAt) without eager subject loading"
+  ],
+  "acceptance_criteria": [
+    "JWT secret is validated at module load time, crashing serverless cold start if missing",
+    "api/index.ts imports from ../packages/backend/src/index.ts (no .js extension mismatch)",
+    "Auth routes have rate limiting (5 attempts per minute per IP on login/register)",
+    "GET /api/periods returns only period metadata without subjects/components/grades",
+    "npm run build succeeds",
+    "npm test passes all tests"
+  ],
+  "verification": [
+    "npm run build succeeds",
+    "npm test passes all tests"
+  ],
+  "blocked_reason": null
+}
