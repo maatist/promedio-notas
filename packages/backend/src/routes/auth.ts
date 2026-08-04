@@ -1,16 +1,16 @@
 import { Router, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../lib/prisma.js';
+import { getJwtSecret } from '../lib/jwt.js';
 import { validate } from '../middleware/validate.js';
 import { authenticate, AuthRequest } from '../middleware/auth.js';
 import { registerSchema, loginSchema } from '../validators/schemas.js';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 function generateToken(userId: string): string {
-  const secret = process.env.JWT_SECRET || 'default-secret';
+  const secret = getJwtSecret();
   return jwt.sign({ userId }, secret, { expiresIn: '7d' });
 }
 

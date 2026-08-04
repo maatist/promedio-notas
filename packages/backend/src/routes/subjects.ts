@@ -1,5 +1,5 @@
 import { Router, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../lib/prisma.js';
 import { authenticate, AuthRequest } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import { createSubjectSchema, updateSubjectSchema } from '../validators/schemas.js';
@@ -9,7 +9,6 @@ import {
 } from '../services/gradeCalculator.js';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // All subject routes require authentication
 router.use(authenticate);
@@ -95,7 +94,7 @@ router.post(
             name: c.name,
             weightPercentage: c.weightPercentage,
           }))
-        : [{ name: 'General', weightPercentage: 1.0 }];
+        : [{ name: 'General', weightPercentage: 100 }];
 
       const subject = await prisma.subject.create({
         data: {

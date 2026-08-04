@@ -6,6 +6,7 @@ import periodRoutes from './routes/periods.js';
 import subjectRoutes from './routes/subjects.js';
 import gradeRoutes from './routes/grades.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { getJwtSecret } from './lib/jwt.js';
 
 dotenv.config();
 
@@ -33,8 +34,13 @@ app.use('/api', gradeRoutes);
 // Global error handler
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Only start listening when running directly (not imported as a module for serverless)
+if (process.env.VERCEL !== '1') {
+  // Validate required environment variables at startup
+  getJwtSecret();
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
 export default app;

@@ -1,12 +1,11 @@
 import { Router, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../lib/prisma.js';
 import { authenticate, AuthRequest } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import { createGradeSchema, updateGradeSchema } from '../validators/schemas.js';
 import { validateWeightsTotal } from '../services/gradeCalculator.js';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // All grade routes require authentication
 router.use(authenticate);

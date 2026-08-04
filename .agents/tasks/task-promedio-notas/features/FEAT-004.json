@@ -1,0 +1,33 @@
+{
+  "id": "FEAT-004",
+  "type": "fix",
+  "description": "Address code review issues: fix JWT hardcoded fallback, weight unit mismatch, Prisma singleton, SubjectCard duplicated logic, and Vercel serverless deployment",
+  "status": "completed",
+  "steps": [
+    "Remove hardcoded JWT_SECRET fallback and create getJwtSecret() helper that throws if env var is missing",
+    "Create Prisma singleton in packages/backend/src/lib/prisma.ts and update all route files to use it",
+    "Fix weight unit mismatch: update backend Zod schemas to accept 0-100 integers instead of 0-1 decimals",
+    "Update gradeCalculator service and tests to work with integer percentages (0-100)",
+    "Update SubjectCard to use backend-computed calculatedAverage and component.average instead of duplicating calculation logic",
+    "Create Vercel serverless function at api/index.ts wrapping the Express app",
+    "Update vercel.json to route /api/* to the serverless function",
+    "Add calculatedAverage and average fields to shared TypeScript interfaces",
+    "Update backend index.ts to conditionally start server (skip in Vercel environment)"
+  ],
+  "acceptance_criteria": [
+    "Server fails to start if JWT_SECRET env var is not set",
+    "Only one PrismaClient instance is created across all route files",
+    "Frontend can create subjects with component weights as integers (e.g., 60, 40) without backend validation errors",
+    "Frontend can create grades with weight as integers (e.g., 30) without backend validation errors",
+    "SubjectCard uses backend-computed averages from API response",
+    "Vercel deployment has a working /api route via serverless function",
+    "All 23 existing tests pass",
+    "Build succeeds without TypeScript errors"
+  ],
+  "verification": [
+    "npm run build succeeds",
+    "npm test passes all 23 tests (18 backend + 5 frontend)"
+  ],
+  "blocked_reason": null,
+  "findings": "The weight unit mismatch was the critical bug - frontend sent integers (30, 60, 40) but backend Zod schemas rejected anything above 1.0. Fixed by changing backend schemas to accept 1-100. The gradeCalculator math is identical since it divides weighted sums by total weights regardless of the scale. Vercel serverless function created at api/index.ts using @vercel/node to wrap the Express app."
+}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronRight, Edit2, Trash2 } from 'lucide-react';
-import type { SubjectWithDetails, SubjectComponentWithGrades } from '@promedio-notas/shared';
+import type { SubjectWithDetails } from '@promedio-notas/shared';
 import { useI18n } from '../i18n';
 import GradeRow from './GradeRow';
 import AddGradeForm from './AddGradeForm';
@@ -12,32 +12,6 @@ interface SubjectCardProps {
   onAddGrade: (componentId: string, payload: { name: string; value: number | null; weightPercentage: number }) => Promise<void>;
   onEdit: (subject: SubjectWithDetails) => void;
   onDelete: (id: string) => void;
-}
-
-function calculateComponentAverage(component: SubjectComponentWithGrades): number | null {
-  const gradesWithValues = component.grades.filter((g) => g.value !== null);
-  if (gradesWithValues.length === 0) return null;
-  const totalWeight = gradesWithValues.reduce((sum, g) => sum + g.weightPercentage, 0);
-  if (totalWeight === 0) return null;
-  const weightedSum = gradesWithValues.reduce((sum, g) => sum + (g.value! * g.weightPercentage), 0);
-  return weightedSum / totalWeight;
-}
-
-function calculateSubjectAverage(subject: SubjectWithDetails): number | null {
-  if (!subject.isComposite || subject.components.length <= 1) {
-    const component = subject.components[0];
-    if (!component) return null;
-    return calculateComponentAverage(component);
-  }
-  const componentAverages = subject.components.map((c) => ({
-    avg: calculateComponentAverage(c),
-    weight: c.weightPercentage,
-  }));
-  const validComponents = componentAverages.filter((c) => c.avg !== null);
-  if (validComponents.length === 0) return null;
-  const totalWeight = validComponents.reduce((sum, c) => sum + c.weight, 0);
-  const weightedSum = validComponents.reduce((sum, c) => sum + (c.avg! * c.weight), 0);
-  return weightedSum / totalWeight;
 }
 
 export default function SubjectCard({
@@ -52,7 +26,8 @@ export default function SubjectCard({
   const [confirmDelete, setConfirmDelete] = useState(false);
   const { t } = useI18n();
 
-  const average = calculateSubjectAverage(subject);
+  // Use backend-computed average instead of duplicating calculation logic
+  const average = subject.calculatedAverage ?? null;
   const avgColor = average !== null
     ? average >= 4.0
       ? 'text-green-600 dark:text-green-400'
@@ -122,7 +97,8 @@ export default function SubjectCard({
         <div className="px-5 pb-4 border-t border-primary-50 dark:border-secondary-800/50">
           {subject.components.map((component) => {
             const usedWeight = component.grades.reduce((sum, g) => sum + g.weightPercentage, 0);
-            const compAvg = calculateComponentAverage(component);
+            // Use backend-computed component average
+            const compAvg = component.average ?? null;
 
             return (
               <div key={component.id} className="mt-3">

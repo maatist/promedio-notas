@@ -12,6 +12,7 @@ export interface ComponentInput {
  * Calculates the weighted average for a single component.
  * Formula: sum(grade.value * grade.weight) / sum(weights)
  * Only grades with non-null values are included.
+ * Weights are integers 0-100 representing percentages.
  */
 export function calculateComponentAverage(grades: GradeInput[]): number | null {
   const validGrades = grades.filter(
@@ -40,6 +41,7 @@ export function calculateComponentAverage(grades: GradeInput[]): number | null {
  * Calculates the weighted average for a composite subject.
  * Formula: sum(component_avg * component_weight) / sum(component_weights)
  * Only components with calculable averages are included.
+ * Weights are integers 0-100 representing percentages.
  */
 export function calculateSubjectAverage(
   components: ComponentInput[]
@@ -71,12 +73,12 @@ export function calculateSubjectAverage(
 
 /**
  * Validates that the sum of grade weights for a component does not exceed 100%.
- * Returns true if valid.
+ * Weights are integers 0-100. Returns true if valid.
  */
 export function validateWeightsTotal(
   existingWeights: number[],
   newWeight: number
 ): boolean {
   const total = existingWeights.reduce((sum, w) => sum + w, 0) + newWeight;
-  return total <= 1.001; // Small tolerance for floating point
+  return total <= 100.1; // Small tolerance for floating point
 }

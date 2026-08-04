@@ -34,8 +34,8 @@ const componentSchema = z.object({
   name: z.string().min(1, 'Component name is required'),
   weightPercentage: z
     .number()
-    .min(0.01, 'Weight must be greater than 0')
-    .max(1, 'Weight must be at most 1.0 (100%)'),
+    .min(1, 'Weight must be at least 1%')
+    .max(100, 'Weight must be at most 100%'),
 });
 
 export const createSubjectSchema = z
@@ -63,11 +63,11 @@ export const createSubjectSchema = z
           (sum, c) => sum + c.weightPercentage,
           0
         );
-        return Math.abs(totalWeight - 1.0) < 0.001;
+        return Math.abs(totalWeight - 100) < 0.1;
       }
       return true;
     },
-    { message: 'Component weights must sum to 1.0 (100%)' }
+    { message: 'Component weights must sum to 100%' }
   );
 
 export const updateSubjectSchema = z.object({
@@ -91,8 +91,8 @@ export const createGradeSchema = z.object({
     .optional(),
   weightPercentage: z
     .number()
-    .min(0.01, 'Weight must be greater than 0')
-    .max(1, 'Weight must be at most 1.0 (100%)'),
+    .min(1, 'Weight must be at least 1%')
+    .max(100, 'Weight must be at most 100%'),
 });
 
 export const updateGradeSchema = z.object({
@@ -109,7 +109,7 @@ export const updateGradeSchema = z.object({
     .optional(),
   weightPercentage: z
     .number()
-    .min(0.01, 'Weight must be greater than 0')
-    .max(1, 'Weight must be at most 1.0 (100%)')
+    .min(1, 'Weight must be at least 1%')
+    .max(100, 'Weight must be at most 100%')
     .optional(),
 });

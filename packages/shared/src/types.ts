@@ -104,8 +104,10 @@ export interface PeriodWithSubjects extends Period {
 
 export interface SubjectWithDetails extends Subject {
   components: SubjectComponentWithGrades[];
+  calculatedAverage?: number | null;
 }
 
 export interface SubjectComponentWithGrades extends SubjectComponent {
   grades: Grade[];
+  average?: number | null;
 }
