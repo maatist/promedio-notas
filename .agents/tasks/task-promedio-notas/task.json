@@ -1,14 +1,14 @@
 {
   "task_id": "task-promedio-notas",
-  "task_description": "Build a university student grade-tracking web application with React + Tailwind frontend (pastel pink/purple palette, dark/light mode), Node.js/Express backend with JWT authentication, and PostgreSQL database. Supports simple and composite subjects with configurable weight percentages for calculating weighted averages.",
+  "task_description": "Build a university student grade-tracking web application with React + Tailwind frontend (pastel pink/purple palette, dark/light mode, i18n EN/ES), Node.js/Express backend with JWT authentication, and PostgreSQL database. Supports simple and composite subjects with configurable weight percentages for calculating weighted averages. Deployable on Vercel.",
   "status": "completed",
-  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003", "FEAT-004", "FEAT-005"],
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003"],
   "blocked_reason": null,
   "verification": {
     "build": "pass",
     "tests": "pass",
     "test_quality": "pass",
     "docker_build": "skipped",
-    "summary": "Full monorepo build succeeds (shared + backend + frontend). All 23 tests pass (18 backend grade calculator tests + 5 frontend render tests). FEAT-005 addresses review blocking issues: JWT validated at module load, serverless import path fixed, rate limiting on auth, period endpoint simplified."
+    "summary": "Full monorepo build succeeds. All 23 tests pass (18 backend + 5 frontend). Two review passes completed with all critical issues fixed: JWT fail-fast at module level, weight unit mismatch resolved (integers 1-100), PrismaClient singleton, Vercel serverless function with correct import path, rate limiting on auth, period endpoint optimized. Docker build skipped (Vercel deployment target)."
   }
 }
