@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build -w packages/shared && npm run build -w packages/backend && npm run build -w packages/frontend",
   "outputDirectory": "packages/frontend/dist",
   "framework": "vite",
   "functions": {
