@@ -2,7 +2,7 @@
   "id": "FEAT-006",
   "type": "docs",
   "description": "Create comprehensive README.md, scripts/setup.sh setup script, and update .env.example at root level",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "Create README.md at root with full project documentation in Spanish",
     "Create scripts/setup.sh that verifies .env, installs deps, generates Prisma client, runs migrations",
