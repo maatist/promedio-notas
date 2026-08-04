@@ -1,0 +1,48 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Frontend implementation - Complete React SPA with authentication flow, dashboard showing all subjects with grades and averages, inline grade editing, modal for creating/editing subjects (supporting composite subjects with configurable component weights), dark/light mode toggle, and pastel pink/purple themed UI.",
+  "status": "pending",
+  "steps": [
+    "Create packages/frontend/src/contexts/AuthContext.tsx - React context providing login, register, logout functions, current user state, and JWT token management (stored in localStorage with axios interceptor for Authorization header)",
+    "Create packages/frontend/src/contexts/ThemeContext.tsx - Dark/light mode context with toggle function, persists preference in localStorage, applies 'dark' class to document root",
+    "Create packages/frontend/src/api/client.ts - Axios instance configured with base URL, auth interceptor, and response error handling (auto-logout on 401)",
+    "Create packages/frontend/src/api/services.ts - API service functions: authService (login, register, me), periodService (list, create, update, delete), subjectService (list, create, update, delete), gradeService (create, update, delete)",
+    "Create packages/frontend/src/pages/LoginPage.tsx - Login/register form with tabs, styled with pastel pink/purple gradient background, card-style form with rounded corners and soft shadows, input validation and error display",
+    "Create packages/frontend/src/pages/DashboardPage.tsx - Main page showing: period selector dropdown at top, list of all subjects as expandable cards showing current average, within each card show grades table with name/value/weight columns and inline-editable fields, 'Add Grade' button per component, progress indicator showing total weight allocated vs 100%",
+    "Create packages/frontend/src/components/SubjectCard.tsx - Card component for each subject showing: subject name, calculated average (color-coded: green >= 4.0, red < 4.0), expandable section with grades table. For composite subjects, show each component as a sub-section with its own grades and component weight badge",
+    "Create packages/frontend/src/components/AddSubjectModal.tsx - Modal (using @headlessui/react Dialog) for creating new subject: name input, toggle for 'composite subject', when composite is toggled on show dynamic form to add components (name + weight percentage), validation that component weights sum to 100%, save button calls API",
+    "Create packages/frontend/src/components/EditSubjectModal.tsx - Modal for editing existing subject: pre-populated form, can change name, add/remove components for composite subjects, update weights",
+    "Create packages/frontend/src/components/AddGradeForm.tsx - Inline form or small modal to add a grade to a component: grade name (e.g. 'Solemne 1'), value (1.0-7.0 with 0.1 step), weight percentage. Shows remaining available weight",
+    "Create packages/frontend/src/components/GradeRow.tsx - Table row for a grade with inline editing: click value to edit, click weight to edit, delete button with confirmation, auto-saves on blur",
+    "Create packages/frontend/src/components/Navbar.tsx - Top navigation bar with: app logo/name ('Promedio Notas'), period selector, 'New Subject' button (opens AddSubjectModal), dark/light mode toggle (sun/moon icon), user menu with logout",
+    "Create packages/frontend/src/components/ThemeToggle.tsx - Animated sun/moon toggle button for dark/light mode switching",
+    "Create packages/frontend/src/components/ProtectedRoute.tsx - Route wrapper that redirects to login if not authenticated",
+    "Create packages/frontend/src/App.tsx - Main app with routes: / (DashboardPage, protected), /login (LoginPage), wrapped in AuthProvider and ThemeProvider",
+    "Style all components with Tailwind classes using the custom pastel palette: backgrounds in soft pink/lavender, cards with purple/pink borders, buttons in gradient pink-to-purple, hover states with slightly saturated versions, dark mode variants with deeper purple/navy backgrounds and lighter pink accents",
+    "Add toast notifications using react-hot-toast for success/error feedback on all operations",
+    "Create packages/frontend/src/__tests__/App.test.tsx with basic render test to ensure app mounts without errors"
+  ],
+  "acceptance_criteria": [
+    "Login page displays with pastel pink/purple styling and allows login or registration",
+    "After login, user is redirected to dashboard showing their subjects",
+    "Dashboard displays all subjects for the selected period with calculated weighted averages",
+    "Clicking 'New Subject' in navbar opens modal to create subject",
+    "Creating a composite subject allows adding multiple components with weight percentages that must total 100%",
+    "Grades can be added inline to each subject component with name, value (1.0-7.0), and weight percentage",
+    "Grade values can be edited inline by clicking on them",
+    "Weighted averages update in real-time when grades are added or modified",
+    "Dark/light mode toggle works and persists across page reloads",
+    "UI uses pastel pink/purple color palette consistently in both light and dark modes",
+    "Unauthenticated users are redirected to login page",
+    "Toast notifications appear for successful operations and errors",
+    "App is responsive and works on mobile viewports"
+  ],
+  "verification": [
+    "Run npm run build in packages/frontend and confirm no TypeScript or build errors",
+    "Run npm test in packages/frontend and confirm tests pass",
+    "Start dev server and verify: login flow works, subjects display with grades, averages calculate correctly, dark/light toggle works, modals open/close properly"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

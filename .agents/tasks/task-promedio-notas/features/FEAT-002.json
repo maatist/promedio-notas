@@ -1,0 +1,38 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Backend API implementation - Authentication system with JWT, and full CRUD API for periods, subjects (simple and composite), subject components, and grades. Includes input validation with Zod and proper error handling.",
+  "status": "pending",
+  "steps": [
+    "Create packages/backend/src/middleware/auth.ts - JWT verification middleware that extracts userId from token and attaches to request",
+    "Create packages/backend/src/routes/auth.ts - POST /api/auth/register (username, password with bcrypt hashing), POST /api/auth/login (credential verification, JWT token generation), GET /api/auth/me (return current user info)",
+    "Create packages/backend/src/routes/periods.ts - GET /api/periods (list user's periods), POST /api/periods (create new period with name), PUT /api/periods/:id (rename period), DELETE /api/periods/:id (cascade delete period and all related data)",
+    "Create packages/backend/src/routes/subjects.ts - GET /api/periods/:periodId/subjects (list subjects with components and grades, include calculated averages), POST /api/periods/:periodId/subjects (create subject - simple or composite, with component definitions and weight percentages), PUT /api/subjects/:id (update subject name, composite flag, components), DELETE /api/subjects/:id (cascade delete)",
+    "Create packages/backend/src/routes/grades.ts - POST /api/components/:componentId/grades (add a grade with name, value 1.0-7.0, and weight percentage), PUT /api/grades/:id (update grade value, name, or weight), DELETE /api/grades/:id (remove grade), GET /api/components/:componentId/grades (list grades for a component)",
+    "Create packages/backend/src/services/gradeCalculator.ts - Logic to calculate weighted averages: component average = sum(grade * weight%) / sum(weights), subject average for composite = sum(component_avg * component_weight%) / sum(component_weights), validation that weights per component don't exceed 100%",
+    "Create packages/backend/src/validators/schemas.ts - Zod schemas for all request bodies: registerSchema, loginSchema, createPeriodSchema, createSubjectSchema (with nested components array for composite subjects), createGradeSchema, updateGradeSchema",
+    "Create packages/backend/src/middleware/validate.ts - Generic Zod validation middleware that returns structured error responses",
+    "Create packages/backend/src/middleware/errorHandler.ts - Global error handler middleware with proper HTTP status codes",
+    "Add seed script at packages/backend/prisma/seed.ts with sample user, period, subjects, and grades for development testing",
+    "Create packages/backend/vitest.config.ts and write unit tests in packages/backend/src/__tests__/gradeCalculator.test.ts covering: simple weighted average, composite subject average, edge cases (no grades, partial weights)"
+  ],
+  "acceptance_criteria": [
+    "POST /api/auth/register creates user with hashed password and returns JWT token",
+    "POST /api/auth/login returns JWT token for valid credentials, 401 for invalid",
+    "All protected routes return 401 without valid JWT",
+    "Creating a composite subject with components (e.g., Catedra 60%, Laboratorio 30%, Terreno 10%) stores correctly",
+    "Grade calculation: for grades [5.0 at 30%, 6.0 at 30%, 4.5 at 40%], weighted average = (5.0*0.3 + 6.0*0.3 + 4.5*0.4) / 1.0 = 5.1",
+    "Composite subject final grade correctly combines component averages with their weights",
+    "Validation rejects grades outside 1.0-7.0 range",
+    "Validation rejects component weights that exceed 100% total",
+    "All CRUD operations respect user ownership (users cannot access other users' data)",
+    "Unit tests for grade calculator pass"
+  ],
+  "verification": [
+    "Run npm test in packages/backend and confirm all tests pass",
+    "Run npm run build in packages/backend and confirm no TypeScript errors",
+    "Start the backend server and verify API endpoints respond correctly with curl/httpie"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

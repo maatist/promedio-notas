@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  periods      Period[]
+}
+
+model Period {
+  id        String    @id @default(uuid())
+  name      String
+  userId    String
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjects  Subject[]
+}
+
+model Subject {
+  id          String             @id @default(uuid())
+  name        String
+  periodId    String
+  isComposite Boolean            @default(false)
+  finalGrade  Float?
+  period      Period             @relation(fields: [periodId], references: [id], onDelete: Cascade)
+  components  SubjectComponent[]
+}
+
+model SubjectComponent {
+  id               String  @id @default(uuid())
+  subjectId        String
+  name             String
+  weightPercentage Float
+  subject          Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  grades           Grade[]
+}
+
+model Grade {
+  id                 String           @id @default(uuid())
+  subjectComponentId String
+  name               String
+  value              Float?
+  weightPercentage   Float
+  order              Int
+  subjectComponent   SubjectComponent @relation(fields: [subjectComponentId], references: [id], onDelete: Cascade)
+}

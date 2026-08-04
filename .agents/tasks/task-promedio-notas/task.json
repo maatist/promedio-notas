@@ -1,0 +1,7 @@
+{
+  "task_id": "task-promedio-notas",
+  "task_description": "Build a university student grade-tracking web application with React + Tailwind frontend (pastel pink/purple palette, dark/light mode), Node.js/Express backend with JWT authentication, and PostgreSQL database. Supports simple and composite subjects with configurable weight percentages for calculating weighted averages.",
+  "status": "in_progress",
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003"],
+  "blocked_reason": null
+}

@@ -1,0 +1,42 @@
+{
+  "id": "FEAT-001",
+  "type": "chore",
+  "description": "Project scaffolding - Set up the monorepo structure with all dependencies, configuration files, database schema, and development tooling. This establishes the complete foundation for the application.",
+  "status": "in_progress",
+  "steps": [
+    "Create root package.json with npm workspaces pointing to packages/frontend, packages/backend, and packages/shared",
+    "Create packages/shared/package.json and packages/shared/src/types.ts with shared TypeScript interfaces: User, Period, Subject, CompositeSubject, SubjectComponent, Grade, and API request/response types",
+    "Create packages/backend/package.json with dependencies: express, @prisma/client, prisma, bcryptjs, jsonwebtoken, cors, dotenv, zod. DevDeps: typescript, @types/*, vitest, tsx",
+    "Create packages/backend/tsconfig.json targeting ES2020 with strict mode",
+    "Create packages/backend/prisma/schema.prisma with PostgreSQL provider and models: User (id, username, passwordHash, createdAt), Period (id, name, userId, createdAt), Subject (id, name, periodId, isComposite, finalGrade), SubjectComponent (id, subjectId, name, weightPercentage), Grade (id, subjectComponentId, name, value, weightPercentage, order)",
+    "Create packages/backend/src/index.ts with Express server setup, CORS, JSON parsing, and route registration",
+    "Create packages/backend/.env.example with DATABASE_URL, JWT_SECRET, PORT placeholders",
+    "Create packages/frontend/package.json with dependencies: react, react-dom, react-router-dom, axios, @headlessui/react, react-hot-toast, lucide-react. DevDeps: vite, @vitejs/plugin-react, typescript, tailwindcss, postcss, autoprefixer, vitest, @testing-library/react, jsdom",
+    "Create packages/frontend/vite.config.ts with React plugin and proxy to backend API",
+    "Create packages/frontend/tailwind.config.ts with custom pastel pink/purple color palette (primary: rose/pink shades, secondary: purple/violet shades, accent: lavender), dark mode set to 'class' strategy, and custom font configuration",
+    "Create packages/frontend/postcss.config.js with tailwindcss and autoprefixer",
+    "Create packages/frontend/tsconfig.json with path aliases (@/ pointing to src/)",
+    "Create packages/frontend/index.html entry point",
+    "Create packages/frontend/src/main.tsx with React DOM render and App import",
+    "Create packages/frontend/src/App.tsx with React Router setup and AuthProvider wrapper",
+    "Create docker-compose.yml with PostgreSQL 16 service configured for local development",
+    "Create root .gitignore for node_modules, dist, .env, and database files",
+    "Create root .env.example with all required environment variables documented"
+  ],
+  "acceptance_criteria": [
+    "Running npm install at root succeeds and installs all workspace dependencies",
+    "Running npm run build compiles both frontend and backend without TypeScript errors",
+    "Prisma schema validates with npx prisma validate",
+    "Docker compose can start PostgreSQL container",
+    "Tailwind config includes custom pastel pink/purple color palette with dark mode support",
+    "Shared types package exports all necessary interfaces"
+  ],
+  "verification": [
+    "Run npm install and confirm no errors",
+    "Run npm run build and confirm both packages compile",
+    "Run npx prisma validate --schema=packages/backend/prisma/schema.prisma",
+    "Confirm tailwind.config.ts has custom color palette and darkMode: 'class'"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}
