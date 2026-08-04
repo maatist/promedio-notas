@@ -2,7 +2,7 @@
   "id": "FEAT-005",
   "type": "fix",
   "description": "Address second-round review issues: JWT validation in serverless, import path fix, rate limiting, and period over-fetching",
-  "status": "in_progress",
+  "status": "completed",
   "steps": [
     "Move getJwtSecret() call to module level in packages/backend/src/lib/jwt.ts so it executes on first import",
     "Fix api/index.ts import path to use .ts extension for @vercel/node compatibility",
