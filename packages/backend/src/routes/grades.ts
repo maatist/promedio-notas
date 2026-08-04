@@ -99,7 +99,7 @@ router.post(
         select: { weightPercentage: true },
       });
 
-      const existingWeights = existingGrades.map((g) => g.weightPercentage);
+      const existingWeights = existingGrades.map((g: { weightPercentage: number }) => g.weightPercentage);
       if (!validateWeightsTotal(existingWeights, weightPercentage)) {
         res.status(400).json({
           success: false,
@@ -151,7 +151,7 @@ router.put('/grades/:id', validate(updateGradeSchema), async (req: AuthRequest, 
         select: { weightPercentage: true },
       });
 
-      const existingWeights = existingGrades.map((g) => g.weightPercentage);
+      const existingWeights = existingGrades.map((g: { weightPercentage: number }) => g.weightPercentage);
       if (!validateWeightsTotal(existingWeights, weightPercentage)) {
         res.status(400).json({
           success: false,

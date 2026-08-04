@@ -40,15 +40,15 @@ router.get('/periods/:periodId/subjects', async (req: AuthRequest, res: Response
     });
 
     // Calculate averages
-    const subjectsWithAverages = subjects.map((subject) => {
-      const componentsWithAverages = subject.components.map((comp) => ({
+    const subjectsWithAverages = subjects.map((subject: any) => {
+      const componentsWithAverages = subject.components.map((comp: any) => ({
         ...comp,
         average: calculateComponentAverage(comp.grades),
       }));
 
       const subjectAverage = subject.isComposite
         ? calculateSubjectAverage(
-            subject.components.map((comp) => ({
+            subject.components.map((comp: any) => ({
               weightPercentage: comp.weightPercentage,
               grades: comp.grades,
             }))
