@@ -184,7 +184,7 @@ describe('Preservation Property — Registration Flow (Test 2c)', () => {
    * **Validates: Requirements 3.1**
    */
   it('2c: register stores token and user in localStorage and context', async () => {
-    const mockUser = { id: 'user-new', username: 'newuser' };
+    const mockUser = { id: 'user-new', username: 'newuser', createdAt: new Date() };
     const mockToken = 'registration-token-abc';
 
     // authService.me is called by useEffect on mount when token is null → skip
@@ -255,7 +255,7 @@ describe('Preservation Property — Registration Flow (Test 2c)', () => {
         localStorage.clear();
         vi.clearAllMocks();
 
-        const mockUser = { id: `user-${username}`, username };
+        const mockUser = { id: `user-${username}`, username, createdAt: new Date() };
         const mockToken = `token-${username}-${Date.now()}`;
 
         vi.mocked(authService.me).mockResolvedValue(mockUser);

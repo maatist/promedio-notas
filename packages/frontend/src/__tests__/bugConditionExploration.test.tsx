@@ -13,7 +13,7 @@
  *
  * DO NOT fix these tests or the code when they fail.
  */
-import { render, act, waitFor } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
 import React from 'react';
@@ -58,7 +58,7 @@ describe('Bug Condition Exploration — Login Race Condition', () => {
    * **Validates: Requirements 1.1**
    */
   it('1a: login should keep token and user set even when /auth/me rejects', async () => {
-    const mockUser = { id: 'user-1', username: 'testuser' };
+    const mockUser = { id: 'user-1', username: 'testuser', createdAt: new Date() };
     const mockToken = 'valid-jwt-token-123';
 
     // Login succeeds
