@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef, type ReactNode } from 'react';
 import type { User } from '@promedio-notas/shared';
 import { authService } from '../api/services';
 
@@ -21,8 +21,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
+  // Guard ref: prevents the verification useEffect from firing a /me call
+  // when the token was just set by login/register
+  const isAuthenticating = useRef(false);
+
+  // Only verify the token on initial mount — login/register already set the user
+  // from the API response, so no secondary verification is needed.
   useEffect(() => {
     const verifyToken = async () => {
+      if (isAuthenticating.current) {
+        setLoading(false);
+        return;
+      }
+
       if (token) {
         try {
           const userData = await authService.me();
@@ -38,22 +49,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     };
     verifyToken();
-  }, [token]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const login = useCallback(async (username: string, password: string) => {
-    const response = await authService.login(username, password);
-    setToken(response.token);
-    setUser(response.user);
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
+    isAuthenticating.current = true;
+    try {
+      const response = await authService.login(username, password);
+      setToken(response.token);
+      setUser(response.user);
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify(response.user));
+    } finally {
+      isAuthenticating.current = false;
+    }
   }, []);
 
   const register = useCallback(async (username: string, password: string) => {
-    const response = await authService.register(username, password);
-    setToken(response.token);
-    setUser(response.user);
-    localStorage.setItem('token', response.token);
-    localStorage.setItem('user', JSON.stringify(response.user));
+    isAuthenticating.current = true;
+    try {
+      const response = await authService.register(username, password);
+      setToken(response.token);
+      setUser(response.user);
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify(response.user));
+    } finally {
+      isAuthenticating.current = false;
+    }
   }, []);
 
   const logout = useCallback(() => {

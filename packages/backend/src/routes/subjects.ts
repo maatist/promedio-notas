@@ -126,12 +126,12 @@ router.post(
 router.put('/subjects/:id', validate(updateSubjectSchema), async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const { name } = req.body;
+    const { name, isComposite, components } = req.body;
 
     // Verify ownership through period
     const existing = await prisma.subject.findFirst({
       where: { id },
-      include: { period: true },
+      include: { period: true, components: true },
     });
 
     if (!existing || existing.period.userId !== req.userId) {
@@ -139,9 +139,79 @@ router.put('/subjects/:id', validate(updateSubjectSchema), async (req: AuthReque
       return;
     }
 
-    const subject = await prisma.subject.update({
+    // Handle structural changes within a transaction
+    if (isComposite !== undefined) {
+      // isComposite is provided — full structural change
+      await prisma.$transaction(async (tx) => {
+        // Delete all existing components (cascades to their grades)
+        await tx.subjectComponent.deleteMany({ where: { subjectId: id } });
+
+        // Create new components based on the new structure
+        if (isComposite) {
+          // Converting to composite: create components from payload
+          await tx.subjectComponent.createMany({
+            data: components!.map((c: { name: string; weightPercentage: number }) => ({
+              subjectId: id,
+              name: c.name,
+              weightPercentage: c.weightPercentage,
+            })),
+          });
+        } else {
+          // Converting to simple: create a single "General" component
+          await tx.subjectComponent.create({
+            data: {
+              subjectId: id,
+              name: 'General',
+              weightPercentage: 100,
+            },
+          });
+        }
+
+        // Update the subject's isComposite flag and optionally name
+        await tx.subject.update({
+          where: { id },
+          data: {
+            isComposite,
+            ...(name !== undefined && { name }),
+          },
+        });
+      });
+    } else if (components !== undefined && existing.isComposite) {
+      // Only components provided and subject is already composite — replace components
+      await prisma.$transaction(async (tx) => {
+        // Delete existing components (cascades to their grades)
+        await tx.subjectComponent.deleteMany({ where: { subjectId: id } });
+
+        // Create new components from payload
+        await tx.subjectComponent.createMany({
+          data: components.map((c: { name: string; weightPercentage: number }) => ({
+            subjectId: id,
+            name: c.name,
+            weightPercentage: c.weightPercentage,
+          })),
+        });
+
+        // Update name if provided
+        if (name !== undefined) {
+          await tx.subject.update({
+            where: { id },
+            data: { name },
+          });
+        }
+      });
+    } else {
+      // Name-only update (no structural changes)
+      if (name !== undefined) {
+        await prisma.subject.update({
+          where: { id },
+          data: { name },
+        });
+      }
+    }
+
+    // Fetch and return the full updated subject with components and grades
+    const subject = await prisma.subject.findUnique({
       where: { id },
-      data: { name },
       include: {
         components: {
           include: { grades: true },

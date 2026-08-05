@@ -70,13 +70,38 @@ export const createSubjectSchema = z
     { message: 'Component weights must sum to 100%' }
   );
 
-export const updateSubjectSchema = z.object({
-  name: z
-    .string()
-    .min(1, 'Subject name is required')
-    .max(200, 'Subject name must be at most 200 characters')
-    .optional(),
-});
+export const updateSubjectSchema = z
+  .object({
+    name: z
+      .string()
+      .min(1, 'Subject name is required')
+      .max(200, 'Subject name must be at most 200 characters')
+      .optional(),
+    isComposite: z.boolean().optional(),
+    components: z.array(componentSchema).optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.isComposite === true) {
+        return data.components && data.components.length >= 2;
+      }
+      return true;
+    },
+    { message: 'Composite subjects must have at least 2 components' }
+  )
+  .refine(
+    (data) => {
+      if (data.isComposite === true && data.components) {
+        const totalWeight = data.components.reduce(
+          (sum, c) => sum + c.weightPercentage,
+          0
+        );
+        return Math.abs(totalWeight - 100) < 0.1;
+      }
+      return true;
+    },
+    { message: 'Component weights must sum to 100%' }
+  );
 
 export const createGradeSchema = z.object({
   name: z

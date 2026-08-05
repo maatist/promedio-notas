@@ -1,0 +1,183 @@
+{
+  "pbtResults": {
+    "1. Write bug condition exploration tests": {
+      "status": "passed",
+      "failingExample": "All 5 tests FAIL as expected on unfixed code, confirming both bugs exist:\n\n**Frontend (Login Race - Bug 1):**\n- Test 1a (useEffect race): After login sets token to 'valid-jwt-token-123', the useEffect watching [token] fires authService.me() which rejects, and the catch block clears localStorage. Result: localStorage.getItem('token') === null (expected 'valid-jwt-token-123').\n- Test 1b (interceptor 401): After setting 'fresh-login-token' in localStorage, a 401 on /auth/me triggers the interceptor which unconditionally clears localStorage and sets location to /login. Result: localStorage.getItem('token') === null (expected 'fresh-login-token').\n\n**Backend (Subject Edit - Bug 2):**\n- Test 1c (structural fields): updateSubjectSchema.parse({ name: 'Mathematics', isComposite: true, components: [{name:'Exam',weightPercentage:60},{name:'Homework',weightPercentage:40}] }) returns { name: 'Mathematics' } — isComposite and components are stripped by Zod.\n- Test 1d (weight change): updateSubjectSchema.parse({ components: [{name:'Exam',weightPercentage:70},{name:'Homework',weightPercentage:30}] }) returns {} — components field is stripped entirely.\n- PBT counterexample: [\" \",[{\"name\":\" \",\"weightPercentage\":97},{\"name\":\" \",\"weightPercentage\":3}]] — for ANY valid composite payload, schema strips structural fields.",
+      "lastRunTimestamp": 1785949747533
+    },
+    "2. Write preservation property tests (BEFORE implementing fix)": {
+      "status": "passed",
+      "lastRunTimestamp": 1785950041964
+    },
+    "3.5 Verify bug condition exploration tests now PASS": {
+      "status": "passed",
+      "lastRunTimestamp": 1785950606858
+    },
+    "3.6 Verify preservation tests still PASS": {
+      "status": "passed",
+      "lastRunTimestamp": 1785950683956
+    }
+  },
+  "executionHistory": {
+    "1. Write bug condition exploration tests": [
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785949521799
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785949531922
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785949768281
+      }
+    ],
+    "2. Write preservation property tests (BEFORE implementing fix)": [
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785949521861
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785949772568
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950067500
+      }
+    ],
+    "3.1 Fix AuthContext — guard useEffect against login/register token changes": [
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785949521933
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950076352
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950203976
+      }
+    ],
+    "3.2 Fix Axios interceptor — skip 401 clear/redirect for auth endpoints": [
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785949521987
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950208696
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950313426
+      }
+    ],
+    "3.3 Expand updateSubjectSchema — add isComposite and components validation": [
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785949522040
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950317492
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950404185
+      }
+    ],
+    "3.4 Fix PUT /api/subjects/:id handler — persist structural changes": [
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785949522089
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950408576
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950493464
+      }
+    ],
+    "3.5 Verify bug condition exploration tests now PASS": [
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785949522135
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950497367
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950621036
+      }
+    ],
+    "3.6 Verify preservation tests still PASS": [
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785949522183
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950625144
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950698894
+      }
+    ],
+    "4. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785949522237
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950704281
+      },
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950760621
+      }
+    ],
+    "3. Fix for login race condition and subject edit structural fields": [
+      {
+        "executionId": "d0909ec4-b6af-4600-b05a-5ce270897962",
+        "chatSessionId": "sess_4dd2981e-0c5e-4825-a123-de666a69b575",
+        "timestamp": 1785950698950
+      }
+    ]
+  }
+}
