@@ -10,14 +10,15 @@ import { registerSchema, loginSchema } from '../validators/schemas';
 
 const router = Router();
 
-// Rate limit for auth endpoints: 5 attempts per minute per IP
+// Rate limit for auth endpoints: 10 attempts per 15 minutes per IP
 const authLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  max: 5, // limit each IP to 5 requests per windowMs
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // limit each IP to 10 requests per windowMs
   message: { success: false, error: 'Too many attempts, please try again later' },
   standardHeaders: true,
   legacyHeaders: false,
   validate: { xForwardedForHeader: false, default: true },
+  skipSuccessfulRequests: true, // only count failed attempts
 });
 
 function generateToken(userId: string): string {

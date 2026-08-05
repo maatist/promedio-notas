@@ -39,6 +39,8 @@ export default function LoginPage() {
       const axiosErr = err as { response?: { status?: number } };
       if (axiosErr.response?.status === 401) {
         setError(t.auth.errorInvalid);
+      } else if (axiosErr.response?.status === 429) {
+        setError('Too many attempts, please try again later');
       } else {
         setError(t.auth.errorGeneric);
         toast.error(t.auth.errorGeneric);
