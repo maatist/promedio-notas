@@ -177,28 +177,55 @@ router.put('/subjects/:id', validate(updateSubjectSchema), async (req: AuthReque
         });
       });
     } else if (components !== undefined && existing.isComposite) {
-      // Only components provided and subject is already composite — replace components
-      await prisma.$transaction(async (tx) => {
-        // Delete existing components (cascades to their grades)
-        await tx.subjectComponent.deleteMany({ where: { subjectId: id } });
+      // Only components provided and subject is already composite
+      // Try to update weights in-place if component names match (preserves grades)
+      const existingNames = existing.components.map(c => c.name).sort();
+      const incomingNames = components.map((c: { name: string; weightPercentage: number }) => c.name).sort();
+      const sameStructure = existingNames.length === incomingNames.length &&
+        existingNames.every((n: string, i: number) => n === incomingNames[i]);
 
-        // Create new components from payload
-        await tx.subjectComponent.createMany({
-          data: components.map((c: { name: string; weightPercentage: number }) => ({
-            subjectId: id,
-            name: c.name,
-            weightPercentage: c.weightPercentage,
-          })),
+      if (sameStructure) {
+        // Same components, just update weights in-place (preserves grades)
+        await prisma.$transaction(async (tx) => {
+          for (const comp of components) {
+            const existingComp = existing.components.find((c: { name: string }) => c.name === comp.name);
+            if (existingComp) {
+              await tx.subjectComponent.update({
+                where: { id: existingComp.id },
+                data: { weightPercentage: comp.weightPercentage },
+              });
+            }
+          }
+
+          // Update name if provided
+          if (name !== undefined) {
+            await tx.subject.update({
+              where: { id },
+              data: { name },
+            });
+          }
         });
+      } else {
+        // Structure changed (different components) — must recreate
+        await prisma.$transaction(async (tx) => {
+          await tx.subjectComponent.deleteMany({ where: { subjectId: id } });
 
-        // Update name if provided
-        if (name !== undefined) {
-          await tx.subject.update({
-            where: { id },
-            data: { name },
+          await tx.subjectComponent.createMany({
+            data: components.map((c: { name: string; weightPercentage: number }) => ({
+              subjectId: id,
+              name: c.name,
+              weightPercentage: c.weightPercentage,
+            })),
           });
-        }
-      });
+
+          if (name !== undefined) {
+            await tx.subject.update({
+              where: { id },
+              data: { name },
+            });
+          }
+        });
+      }
     } else {
       // Name-only update (no structural changes)
       if (name !== undefined) {
