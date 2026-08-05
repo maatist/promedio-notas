@@ -2,6 +2,7 @@
 
 Sistema web para estudiantes universitarios que permite registrar, ponderar y calcular promedios de notas con porcentajes configurables. Soporta asignaturas simples y compuestas (catedra + laboratorio + terreno), con una interfaz moderna y amigable.
 
+
 ## Screenshots
 
 > Los screenshots se agregaran proximamente.
