@@ -70,22 +70,29 @@ router.post('/login', authLimiter, validate(loginSchema), async (req: AuthReques
   try {
     const { username, password } = req.body;
 
+    console.log(`[LOGIN] Attempt for username: "${username}"`);
+
     const user = await prisma.user.findUnique({
       where: { username },
     });
 
     if (!user) {
+      console.log(`[LOGIN] User not found: "${username}"`);
       res.status(401).json({ success: false, error: 'Invalid credentials' });
       return;
     }
+
+    console.log(`[LOGIN] User found: "${username}", hash length: ${user.passwordHash.length}`);
 
     const validPassword = await bcrypt.compare(password, user.passwordHash);
 
     if (!validPassword) {
+      console.log(`[LOGIN] Password mismatch for user: "${username}"`);
       res.status(401).json({ success: false, error: 'Invalid credentials' });
       return;
     }
 
+    console.log(`[LOGIN] Success for user: "${username}"`);
     const token = generateToken(user.id);
 
     res.json({
