@@ -271,10 +271,25 @@ Todas las rutas (excepto auth) requieren el header `Authorization: Bearer <token
    - El frontend se sirve como SPA estatica
    - El backend funciona como serverless function en `/api/*`
 
-5. **Ejecuta las migraciones** en la base de datos de produccion:
+5. **Configura el schema en la base de datos de produccion:**
+
+   Tienes dos opciones dependiendo de tu situacion:
+
+   **Opcion A: `prisma db push` (recomendado para setup inicial)**
+   
+   Sincroniza el schema directamente con la base de datos sin necesidad de historial de migraciones. Ideal para el primer despliegue o cuando no tienes migraciones creadas:
    ```bash
-   DATABASE_URL="tu-connection-string-produccion" npx prisma migrate deploy --schema=packages/backend/prisma/schema.prisma
+   DATABASE_URL="<neon-connection-string>" npx prisma db push --schema=packages/backend/prisma/schema.prisma
    ```
+
+   **Opcion B: `prisma migrate deploy` (para migraciones existentes)**
+   
+   Aplica migraciones previamente creadas con `prisma migrate dev`. Usar cuando ya tienes un historial de migraciones en `prisma/migrations/`:
+   ```bash
+   DATABASE_URL="<neon-connection-string>" npx prisma migrate deploy --schema=packages/backend/prisma/schema.prisma
+   ```
+
+   > **Nota:** Este paso es necesario ejecutarlo una sola vez antes del primer despliegue (o cada vez que cambies el schema). Sin las tablas creadas en la base de datos de produccion, las API requests fallaran con errores tipo `relation "User" does not exist`.
 
 ### Configuracion incluida (vercel.json)
 

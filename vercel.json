@@ -1,10 +1,10 @@
 {
-  "buildCommand": "npm run build -w packages/shared && npm run build -w packages/backend && npm run build -w packages/frontend",
+  "buildCommand": "npm run build -w packages/shared && npx prisma generate --schema=packages/backend/prisma/schema.prisma && npm run build -w packages/backend && npm run build -w packages/frontend",
   "outputDirectory": "packages/frontend/dist",
   "framework": "vite",
   "functions": {
     "api/index.ts": {
-      "includeFiles": "packages/backend/dist/**"
+      "includeFiles": "packages/backend/dist/**,node_modules/.prisma/client/**,node_modules/@prisma/client/**,packages/backend/prisma/schema.prisma"
     }
   },
   "rewrites": [

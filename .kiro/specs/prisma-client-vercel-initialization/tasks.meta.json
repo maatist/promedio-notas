@@ -1,0 +1,200 @@
+{
+  "pbtResults": {
+    "1. Write bug condition exploration test": {
+      "status": "passed",
+      "failingExample": "Counterexample from fast-check: [{\"buildCommand\":\"npm run build -w packages/shared && npm run build -w packages/backend && npm run build -w packages/frontend\",\"outputDirectory\":\"packages/frontend/dist\",\"framework\":\"vite\",\"functions\":{\"api/index.ts\":{\"includeFiles\":\"packages/backend/dist/**\"}},\"rewrites\":[{\"source\":\"/api/(.*)\",\"destination\":\"/api/index.ts\"},{\"source\":\"/((?!api/).*)\",\"destination\":\"/index.html\"}]}]\n\nBug conditions confirmed:\n1. buildCommand does NOT contain 'prisma generate' - the build compiles TypeScript without generating the Prisma Client first\n2. includeFiles only contains 'packages/backend/dist/**' - missing 'node_modules/.prisma/client/**', 'node_modules/@prisma/client/**', and 'packages/backend/prisma/schema.prisma'\n3. The current vercel.json configuration is NOT deployment-ready for Prisma Client initialization",
+      "lastRunTimestamp": 1785891029040
+    },
+    "2. Write preservation property tests (BEFORE implementing fix)": {
+      "status": "passed",
+      "lastRunTimestamp": 1785891130595
+    },
+    "3.6 Verify bug condition exploration test now passes": {
+      "status": "passed",
+      "lastRunTimestamp": 1785891471062
+    },
+    "3.7 Verify preservation tests still pass": {
+      "status": "passed",
+      "lastRunTimestamp": 1785891512729
+    }
+  },
+  "executionHistory": {
+    "1. Write bug condition exploration test": [
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785890910144
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785890918052
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891042783
+      }
+    ],
+    "2. Write preservation property tests (BEFORE implementing fix)": [
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785890910221
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891047298
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891145270
+      }
+    ],
+    "3.1 Update `vercel.json` buildCommand to include `prisma generate`": [
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785890910271
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891154143
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891191948
+      }
+    ],
+    "3.2 Update `vercel.json` includeFiles to bundle Prisma Client runtime": [
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785890910324
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891195818
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891228624
+      }
+    ],
+    "3.3 Update `packages/backend/src/lib/prisma.ts` to explicitly pass DATABASE_URL": [
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785890910395
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891232595
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891292550
+      }
+    ],
+    "3.4 Add `postinstall` script to `packages/backend/package.json`": [
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785890910445
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891296824
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891337549
+      }
+    ],
+    "3.5 Document the one-time `prisma db push` command for production database setup": [
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785890910494
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891341802
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891409260
+      }
+    ],
+    "3.6 Verify bug condition exploration test now passes": [
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785890910537
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891413203
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891486353
+      }
+    ],
+    "3.7 Verify preservation tests still pass": [
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785890910581
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891490632
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891524276
+      }
+    ],
+    "4. Checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785890910625
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891530056
+      },
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891576649
+      }
+    ],
+    "3. Fix for Prisma Client Vercel initialization failure": [
+      {
+        "executionId": "31f797d6-e595-4c16-817e-3ee20f6484f0",
+        "chatSessionId": "sess_3985bc07-7acb-44bd-898f-955cb05322e0",
+        "timestamp": 1785891524326
+      }
+    ]
+  }
+}
