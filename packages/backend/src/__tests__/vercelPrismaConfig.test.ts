@@ -45,7 +45,7 @@ function getIncludeFiles(config: VercelConfig): string[] {
   return [];
 }
 
-function hasRequiredIncludeFile(includeFiles: string[], pattern: string): boolean {
+function hasRequiredIncludeFile(includeFiles: readonly string[], pattern: string): boolean {
   return includeFiles.some((f) => f.trim() === pattern);
 }
 
@@ -57,7 +57,7 @@ function hasRequiredIncludeFile(includeFiles: string[], pattern: string): boolea
  */
 function isDeploymentReady(config: {
   buildCommand: string;
-  includeFiles: string[];
+  includeFiles: readonly string[];
 }): boolean {
   const hasGenerate = hasPrismaGenerate(config.buildCommand);
   const hasPrismaClient = hasRequiredIncludeFile(
