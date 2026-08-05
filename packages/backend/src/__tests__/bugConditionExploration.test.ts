@@ -40,9 +40,9 @@ describe('Bug Condition Exploration — Subject Edit Structural Fields', () => {
     // Expected behavior: schema should accept and preserve structural fields
     expect(result).toHaveProperty('isComposite', true);
     expect(result).toHaveProperty('components');
-    expect(result.components).toHaveLength(2);
-    expect(result.components[0]).toEqual({ name: 'Exam', weightPercentage: 60 });
-    expect(result.components[1]).toEqual({ name: 'Homework', weightPercentage: 40 });
+    expect(result.components!).toHaveLength(2);
+    expect(result.components![0]).toEqual({ name: 'Exam', weightPercentage: 60 });
+    expect(result.components![1]).toEqual({ name: 'Homework', weightPercentage: 40 });
   });
 
   /**
@@ -65,9 +65,9 @@ describe('Bug Condition Exploration — Subject Edit Structural Fields', () => {
 
     // Expected behavior: schema should accept components-only payload
     expect(result).toHaveProperty('components');
-    expect(result.components).toHaveLength(2);
-    expect(result.components[0].weightPercentage).toBe(70);
-    expect(result.components[1].weightPercentage).toBe(30);
+    expect(result.components!).toHaveLength(2);
+    expect(result.components![0].weightPercentage).toBe(70);
+    expect(result.components![1].weightPercentage).toBe(30);
   });
 
   /**
