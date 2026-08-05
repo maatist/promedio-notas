@@ -17,6 +17,7 @@ const authLimiter = rateLimit({
   message: { success: false, error: 'Too many attempts, please try again later' },
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false, default: true },
 });
 
 function generateToken(userId: string): string {
