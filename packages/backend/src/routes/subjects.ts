@@ -140,8 +140,8 @@ router.put('/subjects/:id', validate(updateSubjectSchema), async (req: AuthReque
     }
 
     // Handle structural changes within a transaction
-    if (isComposite !== undefined) {
-      // isComposite is provided — full structural change
+    if (isComposite !== undefined && isComposite !== existing.isComposite) {
+      // isComposite actually changed — full structural change required
       await prisma.$transaction(async (tx) => {
         // Delete all existing components (cascades to their grades)
         await tx.subjectComponent.deleteMany({ where: { subjectId: id } });
@@ -176,28 +176,55 @@ router.put('/subjects/:id', validate(updateSubjectSchema), async (req: AuthReque
           },
         });
       });
-    } else if (components !== undefined && existing.isComposite) {
-      // Only components provided and subject is already composite
-      // Try to update weights in-place if component names match (preserves grades)
-      const existingNames = existing.components.map(c => c.name).sort();
-      const incomingNames = components.map((c: { name: string; weightPercentage: number }) => c.name).sort();
-      const sameStructure = existingNames.length === incomingNames.length &&
-        existingNames.every((n: string, i: number) => n === incomingNames[i]);
+    } else if (components !== undefined && (existing.isComposite || isComposite === true)) {
+      // Components provided and subject is (or stays) composite
+      // Try to update weights/names in-place if component count matches (preserves grades)
+      const canUpdateInPlace = existing.components.length === components.length &&
+        existing.components.every((ec: { name: string }, i: number) => {
+          const ic = components[i] as { name: string; weightPercentage: number };
+          // Match by position — allow name and weight changes
+          return ec.name === ic.name || existing.components.length === components.length;
+        });
 
-      if (sameStructure) {
-        // Same components, just update weights in-place (preserves grades)
+      // Better match: check if all incoming component names exist in the current set
+      const existingNames = existing.components.map((c: { name: string }) => c.name);
+      const incomingNames = components.map((c: { name: string; weightPercentage: number }) => c.name);
+      const sameComponents = existingNames.length === incomingNames.length &&
+        existingNames.every((n: string) => incomingNames.includes(n));
+
+      if (sameComponents) {
+        // Same components — update names and weights in-place (preserves grades)
         await prisma.$transaction(async (tx) => {
           for (const comp of components) {
             const existingComp = existing.components.find((c: { name: string }) => c.name === comp.name);
             if (existingComp) {
               await tx.subjectComponent.update({
                 where: { id: existingComp.id },
-                data: { weightPercentage: comp.weightPercentage },
+                data: { name: comp.name, weightPercentage: comp.weightPercentage },
               });
             }
           }
 
-          // Update name if provided
+          // Update subject name if provided
+          if (name !== undefined) {
+            await tx.subject.update({
+              where: { id },
+              data: { name },
+            });
+          }
+        });
+      } else if (existing.components.length === components.length) {
+        // Same number of components but different names — update by position (preserves grades)
+        await prisma.$transaction(async (tx) => {
+          for (let i = 0; i < components.length; i++) {
+            const existingComp = existing.components[i];
+            const newComp = components[i] as { name: string; weightPercentage: number };
+            await tx.subjectComponent.update({
+              where: { id: existingComp.id },
+              data: { name: newComp.name, weightPercentage: newComp.weightPercentage },
+            });
+          }
+
           if (name !== undefined) {
             await tx.subject.update({
               where: { id },
@@ -206,7 +233,7 @@ router.put('/subjects/:id', validate(updateSubjectSchema), async (req: AuthReque
           }
         });
       } else {
-        // Structure changed (different components) — must recreate
+        // Structure actually changed (different number of components) — must recreate
         await prisma.$transaction(async (tx) => {
           await tx.subjectComponent.deleteMany({ where: { subjectId: id } });
 
