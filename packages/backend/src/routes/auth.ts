@@ -83,8 +83,11 @@ router.post('/login', authLimiter, validate(loginSchema), async (req: AuthReques
     }
 
     console.log(`[LOGIN] User found: "${username}", hash length: ${user.passwordHash.length}`);
+    console.log(`[LOGIN] Password received: "${password}", length: ${password.length}`);
+    console.log(`[LOGIN] Hash from DB: "${user.passwordHash}"`);
 
     const validPassword = await bcrypt.compare(password, user.passwordHash);
+    console.log(`[LOGIN] bcrypt.compare result: ${validPassword}`);
 
     if (!validPassword) {
       console.log(`[LOGIN] Password mismatch for user: "${username}"`);
