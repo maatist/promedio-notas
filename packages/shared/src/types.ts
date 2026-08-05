@@ -20,6 +20,7 @@ export interface Subject {
   periodId: string;
   isComposite: boolean;
   finalGrade: number | null;
+  exemptionGrade: number | null;
 }
 
 // Composite subject (extends Subject with components)

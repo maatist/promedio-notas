@@ -14,6 +14,7 @@ interface EditSubjectModalProps {
       name?: string;
       isComposite?: boolean;
       components?: { name: string; weightPercentage: number }[];
+      exemptionGrade?: number | null;
     }
   ) => Promise<void>;
 }
@@ -23,6 +24,7 @@ export default function EditSubjectModal({ open, subject, onClose, onSave }: Edi
   const [name, setName] = useState('');
   const [isComposite, setIsComposite] = useState(false);
   const [components, setComponents] = useState<{ name: string; weightPercentage: number }[]>([]);
+  const [exemptionGrade, setExemptionGrade] = useState<string>('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
@@ -38,6 +40,7 @@ export default function EditSubjectModal({ open, subject, onClose, onSave }: Edi
               { name: 'Laboratorio', weightPercentage: 40 },
             ]
       );
+      setExemptionGrade(subject.exemptionGrade != null ? String(subject.exemptionGrade) : '');
     }
   }, [subject]);
 
@@ -92,10 +95,12 @@ export default function EditSubjectModal({ open, subject, onClose, onSave }: Edi
 
     setSaving(true);
     try {
+      const parsedExemption = exemptionGrade.trim() === '' ? null : parseFloat(exemptionGrade);
       await onSave(subject.id, {
         name: name.trim(),
         isComposite,
         components: isComposite ? components : undefined,
+        exemptionGrade: parsedExemption,
       });
       onClose();
     } catch {
@@ -237,6 +242,22 @@ export default function EditSubjectModal({ open, subject, onClose, onSave }: Edi
                       </button>
                     </div>
                   )}
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      {t.addSubject.exemptionGrade}
+                    </label>
+                    <input
+                      type="number"
+                      min="1.0"
+                      max="7.0"
+                      step="0.1"
+                      value={exemptionGrade}
+                      onChange={(e) => setExemptionGrade(e.target.value)}
+                      placeholder="1.0 - 7.0"
+                      className="w-full px-4 py-2.5 rounded-lg border border-primary-200 dark:border-secondary-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-secondary-300 dark:focus:ring-secondary-600 placeholder-gray-400"
+                    />
+                  </div>
 
                   {error && <p className="text-sm text-red-500 dark:text-red-400">{error}</p>}
 

@@ -64,6 +64,7 @@ export const subjectService = {
       name?: string;
       isComposite?: boolean;
       components?: { name: string; weightPercentage: number }[];
+      exemptionGrade?: number | null;
     }
   ): Promise<SubjectWithDetails> => {
     const { data } = await apiClient.put(`/subjects/${id}`, payload);

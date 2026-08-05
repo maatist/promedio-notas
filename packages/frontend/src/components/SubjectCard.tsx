@@ -5,6 +5,78 @@ import { useI18n } from '../i18n';
 import GradeRow from './GradeRow';
 import AddGradeForm from './AddGradeForm';
 
+/**
+ * Calculates the minimum grade needed in all pending evaluations (assuming the same
+ * score in each) to reach the exemption grade.
+ * Returns null if the calculation doesn't apply (no exemptionGrade, weights not at 100%, or no pending grades).
+ */
+function calculateExemptionNeeded(subject: SubjectWithDetails): number | null {
+  if (subject.exemptionGrade == null) return null;
+
+  if (subject.isComposite && subject.components.length > 1) {
+    // For composite subjects, we need to compute across all components weighted by their component weightPercentage
+    let totalWeightedContribution = 0;
+    let totalWeightedRemaining = 0;
+    let allComponentsFullyAssigned = true;
+    let hasPendingGrade = false;
+
+    for (const component of subject.components) {
+      const componentWeight = component.weightPercentage; // percentage e.g. 60
+      const totalGradeWeight = component.grades.reduce((sum, g) => sum + g.weightPercentage, 0);
+
+      // Check that 100% of weight is assigned in this component
+      if (Math.abs(totalGradeWeight - 100) > 0.1) {
+        allComponentsFullyAssigned = false;
+        break;
+      }
+
+      for (const grade of component.grades) {
+        if (grade.value != null) {
+          // contribution = value * (gradeWeight / 100) * (componentWeight / 100)
+          totalWeightedContribution += grade.value * (grade.weightPercentage / 100) * (componentWeight / 100);
+        } else {
+          hasPendingGrade = true;
+          totalWeightedRemaining += (grade.weightPercentage / 100) * (componentWeight / 100);
+        }
+      }
+    }
+
+    if (!allComponentsFullyAssigned || !hasPendingGrade) return null;
+    if (totalWeightedRemaining === 0) return null;
+
+    const needed = (subject.exemptionGrade - totalWeightedContribution) / totalWeightedRemaining;
+    return needed;
+  } else {
+    // Simple subject - single component
+    const component = subject.components[0];
+    if (!component) return null;
+
+    const totalGradeWeight = component.grades.reduce((sum, g) => sum + g.weightPercentage, 0);
+
+    // Check that 100% of weight is assigned
+    if (Math.abs(totalGradeWeight - 100) > 0.1) return null;
+
+    let gradedContribution = 0;
+    let remainingWeight = 0;
+    let hasPendingGrade = false;
+
+    for (const grade of component.grades) {
+      if (grade.value != null) {
+        gradedContribution += grade.value * (grade.weightPercentage / 100);
+      } else {
+        hasPendingGrade = true;
+        remainingWeight += grade.weightPercentage / 100;
+      }
+    }
+
+    if (!hasPendingGrade) return null;
+    if (remainingWeight === 0) return null;
+
+    const needed = (subject.exemptionGrade - gradedContribution) / remainingWeight;
+    return needed;
+  }
+}
+
 interface SubjectCardProps {
   subject: SubjectWithDetails;
   onUpdateGrade: (id: string, payload: { name?: string; value?: number | null; weightPercentage?: number }) => Promise<void>;
@@ -170,6 +242,36 @@ export default function SubjectCard({
               </div>
             );
           })}
+
+          {/* Exemption grade calculation */}
+          {(() => {
+            const needed = calculateExemptionNeeded(subject);
+            if (needed === null) return null;
+
+            let colorClass: string;
+            let displayText: string;
+
+            if (needed <= 1.0) {
+              // Already meets exemption with any grade
+              colorClass = 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800';
+              displayText = t.subject.exemptionAchieved;
+            } else if (needed > 7.0) {
+              colorClass = 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800';
+              displayText = t.subject.exemptionImpossible;
+            } else if (needed >= 6.0) {
+              colorClass = 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800';
+              displayText = t.subject.needForExemption.replace('{grade}', needed.toFixed(1));
+            } else {
+              colorClass = 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800';
+              displayText = t.subject.needForExemption.replace('{grade}', needed.toFixed(1));
+            }
+
+            return (
+              <div className={`mt-3 px-3 py-2 rounded-lg border text-sm font-medium ${colorClass}`}>
+                {displayText}
+              </div>
+            );
+          })()}
         </div>
       )}
     </div>

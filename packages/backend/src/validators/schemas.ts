@@ -46,6 +46,7 @@ export const createSubjectSchema = z
       .max(200, 'Subject name must be at most 200 characters'),
     isComposite: z.boolean(),
     components: z.array(componentSchema).optional(),
+    exemptionGrade: z.number().min(1.0).max(7.0).nullable().optional(),
   })
   .refine(
     (data) => {
@@ -79,6 +80,7 @@ export const updateSubjectSchema = z
       .optional(),
     isComposite: z.boolean().optional(),
     components: z.array(componentSchema).optional(),
+    exemptionGrade: z.number().min(1.0).max(7.0).nullable().optional(),
   })
   .refine(
     (data) => {

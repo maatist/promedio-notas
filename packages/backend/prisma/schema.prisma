@@ -25,13 +25,14 @@ model Period {
 }
 
 model Subject {
-  id          String             @id @default(uuid())
-  name        String
-  periodId    String
-  isComposite Boolean            @default(false)
-  finalGrade  Float?
-  period      Period             @relation(fields: [periodId], references: [id], onDelete: Cascade)
-  components  SubjectComponent[]
+  id              String             @id @default(uuid())
+  name            String
+  periodId        String
+  isComposite     Boolean            @default(false)
+  finalGrade      Float?
+  exemptionGrade  Float?
+  period          Period             @relation(fields: [periodId], references: [id], onDelete: Cascade)
+  components      SubjectComponent[]
 }
 
 model SubjectComponent {

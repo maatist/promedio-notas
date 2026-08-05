@@ -89,6 +89,7 @@ export default function DashboardPage() {
       name?: string;
       isComposite?: boolean;
       components?: { name: string; weightPercentage: number }[];
+      exemptionGrade?: number | null;
     }
   ) => {
     await subjectService.update(id, payload);

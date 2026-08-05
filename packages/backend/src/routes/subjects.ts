@@ -76,7 +76,7 @@ router.post(
   async (req: AuthRequest, res: Response) => {
     try {
       const { periodId } = req.params;
-      const { name, isComposite, components } = req.body;
+      const { name, isComposite, components, exemptionGrade } = req.body;
 
       // Verify period ownership
       const period = await prisma.period.findFirst({
@@ -101,6 +101,7 @@ router.post(
           name,
           periodId,
           isComposite,
+          exemptionGrade: exemptionGrade ?? null,
           components: {
             create: componentData,
           },
@@ -126,7 +127,7 @@ router.post(
 router.put('/subjects/:id', validate(updateSubjectSchema), async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, isComposite, components } = req.body;
+    const { name, isComposite, components, exemptionGrade } = req.body;
 
     // Verify ownership through period
     const existing = await prisma.subject.findFirst({
@@ -173,6 +174,7 @@ router.put('/subjects/:id', validate(updateSubjectSchema), async (req: AuthReque
           data: {
             isComposite,
             ...(name !== undefined && { name }),
+            ...(exemptionGrade !== undefined && { exemptionGrade }),
           },
         });
       });
@@ -206,10 +208,13 @@ router.put('/subjects/:id', validate(updateSubjectSchema), async (req: AuthReque
           }
 
           // Update subject name if provided
-          if (name !== undefined) {
+          if (name !== undefined || exemptionGrade !== undefined) {
             await tx.subject.update({
               where: { id },
-              data: { name },
+              data: {
+                ...(name !== undefined && { name }),
+                ...(exemptionGrade !== undefined && { exemptionGrade }),
+              },
             });
           }
         });
@@ -225,10 +230,13 @@ router.put('/subjects/:id', validate(updateSubjectSchema), async (req: AuthReque
             });
           }
 
-          if (name !== undefined) {
+          if (name !== undefined || exemptionGrade !== undefined) {
             await tx.subject.update({
               where: { id },
-              data: { name },
+              data: {
+                ...(name !== undefined && { name }),
+                ...(exemptionGrade !== undefined && { exemptionGrade }),
+              },
             });
           }
         });
@@ -245,20 +253,26 @@ router.put('/subjects/:id', validate(updateSubjectSchema), async (req: AuthReque
             })),
           });
 
-          if (name !== undefined) {
+          if (name !== undefined || exemptionGrade !== undefined) {
             await tx.subject.update({
               where: { id },
-              data: { name },
+              data: {
+                ...(name !== undefined && { name }),
+                ...(exemptionGrade !== undefined && { exemptionGrade }),
+              },
             });
           }
         });
       }
     } else {
       // Name-only update (no structural changes)
-      if (name !== undefined) {
+      if (name !== undefined || exemptionGrade !== undefined) {
         await prisma.subject.update({
           where: { id },
-          data: { name },
+          data: {
+            ...(name !== undefined && { name }),
+            ...(exemptionGrade !== undefined && { exemptionGrade }),
+          },
         });
       }
     }

@@ -45,6 +45,9 @@ export const translations = {
       weight: 'Peso',
       addGrade: 'Agregar nota',
       available: 'disponible',
+      needForExemption: 'Necesitas un {grade} para eximirte',
+      exemptionImpossible: 'No es posible eximirse',
+      exemptionAchieved: 'Ya cumples para eximirte',
     },
     addSubject: {
       title: 'Nueva Asignatura',
@@ -65,6 +68,7 @@ export const translations = {
       errorComponentNames: 'Todos los componentes necesitan un nombre',
       errorWeightSum: 'Los porcentajes deben sumar 100%',
       errorSave: 'Error al guardar la asignatura',
+      exemptionGrade: 'Nota de eximición',
     },
     grade: {
       namePlaceholder: 'Nombre (ej: Solemne 1)',
@@ -132,6 +136,9 @@ export const translations = {
       weight: 'Weight',
       addGrade: 'Add grade',
       available: 'available',
+      needForExemption: 'You need {grade} to be exempt',
+      exemptionImpossible: 'Exemption not possible',
+      exemptionAchieved: 'You already meet exemption',
     },
     addSubject: {
       title: 'New Subject',
@@ -152,6 +159,7 @@ export const translations = {
       errorComponentNames: 'All components need a name',
       errorWeightSum: 'Percentages must add up to 100%',
       errorSave: 'Error saving subject',
+      exemptionGrade: 'Exemption grade',
     },
     grade: {
       namePlaceholder: 'Name (e.g.: Midterm 1)',
@@ -220,6 +228,9 @@ export type TranslationKeys = {
     weight: string;
     addGrade: string;
     available: string;
+    needForExemption: string;
+    exemptionImpossible: string;
+    exemptionAchieved: string;
   };
   addSubject: {
     title: string;
@@ -240,6 +251,7 @@ export type TranslationKeys = {
     errorComponentNames: string;
     errorWeightSum: string;
     errorSave: string;
+    exemptionGrade: string;
   };
   grade: {
     namePlaceholder: string;
