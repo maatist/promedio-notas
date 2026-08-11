@@ -40,7 +40,7 @@ export default function Navbar({
               <ChevronDown className="h-4 w-4" />
             </button>
             {periodMenuOpen && (
-              <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-0 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-primary-100 dark:border-secondary-700 py-1 z-50">
+              <div className="absolute top-full mt-1 left-0 w-56 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-primary-100 dark:border-secondary-700 py-1 z-50">
                 {periods.map((period) => (
                   <button
                     key={period.id}
