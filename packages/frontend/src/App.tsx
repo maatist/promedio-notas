@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import DashboardPage from './pages/DashboardPage';
+import InstallPrompt from './components/InstallPrompt';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </BrowserRouter>
+          <InstallPrompt />
           <Toaster
             position="bottom-center"
             toastOptions={{

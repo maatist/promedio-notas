@@ -126,6 +126,22 @@ export const updateSubjectSchema = z
     { message: 'Component weights must sum to 100%' }
   );
 
+const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+export const gradeDateSchema = z.string()
+  .regex(isoDateRegex, 'Invalid date format, expected YYYY-MM-DD')
+  .refine((val) => {
+    const d = new Date(val + 'T00:00:00Z');
+    return !isNaN(d.getTime()) && d.toISOString().startsWith(val);
+  }, 'Date does not represent a valid calendar date');
+
+export const gradeDescriptionSchema = z.string()
+  .transform((val) => val.trim())
+  .pipe(
+    z.string().max(500, 'Description exceeds 500 character limit')
+  )
+  .transform((val) => val === '' ? null : val);
+
 export const createGradeSchema = z.object({
   name: z
     .string()
@@ -141,6 +157,8 @@ export const createGradeSchema = z.object({
     .number()
     .min(1, 'Weight must be at least 1%')
     .max(100, 'Weight must be at most 100%'),
+  date: gradeDateSchema.nullable().optional(),
+  description: gradeDescriptionSchema.nullable().optional(),
 });
 
 export const updateGradeSchema = z.object({
@@ -160,4 +178,6 @@ export const updateGradeSchema = z.object({
     .min(1, 'Weight must be at least 1%')
     .max(100, 'Weight must be at most 100%')
     .optional(),
+  date: gradeDateSchema.nullable().optional(),
+  description: gradeDescriptionSchema.nullable().optional(),
 });

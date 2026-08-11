@@ -79,6 +79,12 @@ export const translations = {
       cancel: 'Cancelar',
       deleteConfirm: 'Click de nuevo para confirmar',
       deleteGrade: 'Eliminar nota',
+      dateLabel: 'Fecha',
+      datePlaceholder: 'Sin fecha',
+      descriptionLabel: 'Descripción',
+      descriptionPlaceholder: 'Agregar descripción...',
+      invalidDate: 'Formato de fecha inválido',
+      descriptionTooLong: 'La descripción excede 500 caracteres',
     },
     toast: {
       subjectCreated: 'Asignatura creada',
@@ -124,6 +130,18 @@ export const translations = {
       description: 'Agrega un correo electrónico para poder recuperar tu contraseña en caso de olvidarla',
       skip: 'Ahora no',
       save: 'Guardar',
+    },
+    installPrompt: {
+      title: 'Instalar Promedio Notas',
+      description: 'Agrega la app a tu pantalla de inicio para acceso rapido',
+      install: 'Instalar',
+      dismiss: 'Ahora no',
+    },
+    upcomingBanner: {
+      title: 'Evaluaciones próximas',
+      daysRemaining: 'en {n} días',
+      today: 'Hoy',
+      tomorrow: 'Mañana',
     },
   },
   en: {
@@ -206,6 +224,12 @@ export const translations = {
       cancel: 'Cancel',
       deleteConfirm: 'Click again to confirm',
       deleteGrade: 'Delete grade',
+      dateLabel: 'Date',
+      datePlaceholder: 'No date',
+      descriptionLabel: 'Description',
+      descriptionPlaceholder: 'Add description...',
+      invalidDate: 'Invalid date format',
+      descriptionTooLong: 'Description exceeds 500 characters',
     },
     toast: {
       subjectCreated: 'Subject created',
@@ -251,6 +275,18 @@ export const translations = {
       description: 'Add an email address so you can recover your password if you forget it',
       skip: 'Not now',
       save: 'Save',
+    },
+    installPrompt: {
+      title: 'Install Grade Average',
+      description: 'Add the app to your home screen for quick access',
+      install: 'Install',
+      dismiss: 'Not now',
+    },
+    upcomingBanner: {
+      title: 'Upcoming evaluations',
+      daysRemaining: 'in {n} days',
+      today: 'Today',
+      tomorrow: 'Tomorrow',
     },
   },
 } as const;
@@ -334,6 +370,12 @@ export type TranslationKeys = {
     cancel: string;
     deleteConfirm: string;
     deleteGrade: string;
+    dateLabel: string;
+    datePlaceholder: string;
+    descriptionLabel: string;
+    descriptionPlaceholder: string;
+    invalidDate: string;
+    descriptionTooLong: string;
   };
   toast: {
     subjectCreated: string;
@@ -379,5 +421,17 @@ export type TranslationKeys = {
     description: string;
     skip: string;
     save: string;
+  };
+  installPrompt: {
+    title: string;
+    description: string;
+    install: string;
+    dismiss: string;
+  };
+  upcomingBanner: {
+    title: string;
+    daysRemaining: string;
+    today: string;
+    tomorrow: string;
   };
 };

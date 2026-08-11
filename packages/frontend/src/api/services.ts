@@ -4,6 +4,7 @@ import type {
   Period,
   SubjectWithDetails,
   Grade,
+  UpcomingGrade,
 } from '@promedio-notas/shared';
 
 // Auth Service
@@ -87,19 +88,32 @@ export const subjectService = {
 export const gradeService = {
   create: async (
     componentId: string,
-    payload: { name: string; value: number | null; weightPercentage: number }
+    payload: { name: string; value: number | null; weightPercentage: number; date?: string | null; description?: string | null }
   ): Promise<Grade> => {
     const { data } = await apiClient.post(`/components/${componentId}/grades`, payload);
     return data.data;
   },
   update: async (
     id: string,
-    payload: { name?: string; value?: number | null; weightPercentage?: number }
+    payload: { name?: string; value?: number | null; weightPercentage?: number; date?: string | null; description?: string | null }
   ): Promise<Grade> => {
     const { data } = await apiClient.put(`/grades/${id}`, payload);
     return data.data;
   },
   delete: async (id: string): Promise<void> => {
     await apiClient.delete(`/grades/${id}`);
+  },
+};
+
+// Upcoming Grades Service
+export const upcomingService = {
+  getUpcomingGrades: async (): Promise<UpcomingGrade[]> => {
+    try {
+      const { data } = await apiClient.get('/upcoming-grades');
+      return data.data;
+    } catch {
+      // Fail silently - don't break the dashboard
+      return [];
+    }
   },
 };

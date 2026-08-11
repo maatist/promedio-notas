@@ -47,6 +47,18 @@ export interface Grade {
   value: number | null;
   weightPercentage: number;
   order: number;
+  date: string | null;
+  description: string | null;
+}
+
+// Upcoming grade (for banner display)
+export interface UpcomingGrade {
+  id: string;
+  name: string;
+  date: string;
+  description: string | null;
+  subjectComponentName: string;
+  subjectName: string;
 }
 
 // API Request types
@@ -80,6 +92,8 @@ export interface CreateGradeRequest {
   value: number | null;
   weightPercentage: number;
   order: number;
+  date?: string | null;
+  description?: string | null;
 }
 
 export interface UpdateGradeRequest {
@@ -87,6 +101,8 @@ export interface UpdateGradeRequest {
   value?: number | null;
   weightPercentage?: number;
   order?: number;
+  date?: string | null;
+  description?: string | null;
 }
 
 // API Response types

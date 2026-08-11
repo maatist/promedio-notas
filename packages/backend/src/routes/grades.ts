@@ -85,7 +85,7 @@ router.post(
   async (req: AuthRequest, res: Response) => {
     try {
       const { componentId } = req.params;
-      const { name, value, weightPercentage } = req.body;
+      const { name, value, weightPercentage, date, description } = req.body;
 
       const hasAccess = await verifyComponentOwnership(componentId, req.userId!);
       if (!hasAccess) {
@@ -121,6 +121,8 @@ router.post(
           weightPercentage,
           subjectComponentId: componentId,
           order: (maxOrder._max.order ?? -1) + 1,
+          date: date ? new Date(date + 'T00:00:00Z') : null,
+          description: description ?? null,
         },
       });
 
@@ -136,7 +138,7 @@ router.post(
 router.put('/grades/:id', validate(updateGradeSchema), async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const { name, value, weightPercentage } = req.body;
+    const { name, value, weightPercentage, date, description } = req.body;
 
     const { owned, componentId } = await verifyGradeOwnership(id, req.userId!);
     if (!owned) {
@@ -166,6 +168,16 @@ router.put('/grades/:id', validate(updateGradeSchema), async (req: AuthRequest, 
     if (value !== undefined) updateData.value = value;
     if (weightPercentage !== undefined) updateData.weightPercentage = weightPercentage;
 
+    // Date semantics: explicit string → update, null → clear, undefined → preserve
+    if (date !== undefined) {
+      updateData.date = date === null ? null : new Date(date + 'T00:00:00Z');
+    }
+
+    // Description semantics: explicit value (string or null) → update, undefined → preserve
+    if (description !== undefined) {
+      updateData.description = description;
+    }
+
     const grade = await prisma.grade.update({
       where: { id },
       data: updateData,
@@ -174,6 +186,57 @@ router.put('/grades/:id', validate(updateGradeSchema), async (req: AuthRequest, 
     res.json({ success: true, data: grade });
   } catch (error) {
     console.error('Update grade error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+});
+
+// GET /api/upcoming-grades
+router.get('/upcoming-grades', async (req: AuthRequest, res: Response) => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const thirtyDaysLater = new Date(today);
+    thirtyDaysLater.setDate(thirtyDaysLater.getDate() + 30);
+
+    const grades = await prisma.grade.findMany({
+      where: {
+        date: {
+          gte: today,
+          lte: thirtyDaysLater,
+        },
+        subjectComponent: {
+          subject: {
+            period: {
+              userId: req.userId!,
+            },
+          },
+        },
+      },
+      include: {
+        subjectComponent: {
+          include: {
+            subject: true,
+          },
+        },
+      },
+      orderBy: {
+        date: 'asc',
+      },
+    });
+
+    const data = grades.map((grade) => ({
+      id: grade.id,
+      name: grade.name,
+      date: grade.date!.toISOString().split('T')[0],
+      description: grade.description,
+      subjectComponentName: grade.subjectComponent.name,
+      subjectName: grade.subjectComponent.subject.name,
+    }));
+
+    res.json({ success: true, data });
+  } catch (error) {
+    console.error('Get upcoming grades error:', error);
     res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });

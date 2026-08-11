@@ -79,7 +79,7 @@ function calculateExemptionNeeded(subject: SubjectWithDetails): number | null {
 
 interface SubjectCardProps {
   subject: SubjectWithDetails;
-  onUpdateGrade: (id: string, payload: { name?: string; value?: number | null; weightPercentage?: number }) => Promise<void>;
+  onUpdateGrade: (id: string, payload: { name?: string; value?: number | null; weightPercentage?: number; date?: string | null; description?: string | null }) => Promise<void>;
   onDeleteGrade: (id: string) => Promise<void>;
   onAddGrade: (componentId: string, payload: { name: string; value: number | null; weightPercentage: number }) => Promise<void>;
   onEdit: (subject: SubjectWithDetails) => void;
@@ -200,8 +200,10 @@ export default function SubjectCard({
                       <thead>
                         <tr className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">
                           <th className="text-left py-1 px-3 font-medium">{t.subject.evaluation}</th>
+                          <th className="text-center py-1 px-3 font-medium">{t.grade.dateLabel}</th>
                           <th className="text-center py-1 px-3 font-medium">{t.subject.grade}</th>
                           <th className="text-center py-1 px-3 font-medium">{t.subject.weight}</th>
+                          <th className="text-center py-1 px-2 font-medium w-10">{t.grade.descriptionLabel}</th>
                           <th className="text-center py-1 px-2 font-medium w-10"></th>
                         </tr>
                       </thead>

@@ -65,5 +65,7 @@ model Grade {
   value              Float?
   weightPercentage   Float
   order              Int
+  date               DateTime?        @db.Date
+  description        String?          @db.VarChar(500)
   subjectComponent   SubjectComponent @relation(fields: [subjectComponentId], references: [id], onDelete: Cascade)
 }

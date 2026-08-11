@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import toast from 'react-hot-toast';
-import type { Period, SubjectWithDetails } from '@promedio-notas/shared';
-import { periodService, subjectService, gradeService } from '../api/services';
+import type { Period, SubjectWithDetails, UpcomingGrade } from '@promedio-notas/shared';
+import { periodService, subjectService, gradeService, upcomingService } from '../api/services';
 import { useI18n } from '../i18n';
 import { useAuth } from '../contexts/AuthContext';
 import Navbar from '../components/Navbar';
@@ -9,6 +9,7 @@ import SubjectCard from '../components/SubjectCard';
 import AddSubjectModal from '../components/AddSubjectModal';
 import EditSubjectModal from '../components/EditSubjectModal';
 import EmailPromptModal from '../components/EmailPromptModal';
+import UpcomingBanner from '../components/UpcomingBanner';
 import { BookOpen } from 'lucide-react';
 
 export default function DashboardPage() {
@@ -24,6 +25,7 @@ export default function DashboardPage() {
   const [showNewPeriod, setShowNewPeriod] = useState(false);
   const [newPeriodName, setNewPeriodName] = useState('');
   const [showEmailPrompt, setShowEmailPrompt] = useState(false);
+  const [upcomingGrades, setUpcomingGrades] = useState<UpcomingGrade[]>([]);
 
   // Show email prompt if user has no email and hasn't dismissed it this session
   useEffect(() => {
@@ -49,6 +51,15 @@ export default function DashboardPage() {
     };
     loadPeriods();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Load upcoming grades
+  useEffect(() => {
+    const loadUpcoming = async () => {
+      const data = await upcomingService.getUpcomingGrades();
+      setUpcomingGrades(data);
+    };
+    loadUpcoming();
+  }, []);
 
   // Load subjects when period changes
   const loadSubjects = useCallback(async () => {
@@ -131,7 +142,7 @@ export default function DashboardPage() {
 
   const handleUpdateGrade = async (
     id: string,
-    payload: { name?: string; value?: number | null; weightPercentage?: number }
+    payload: { name?: string; value?: number | null; weightPercentage?: number; date?: string | null; description?: string | null }
   ) => {
     await gradeService.update(id, payload);
     toast.success(t.toast.gradeUpdated);
@@ -168,6 +179,8 @@ export default function DashboardPage() {
       />
 
       <main className="max-w-4xl mx-auto px-4 py-6 pb-20">
+        <UpcomingBanner grades={upcomingGrades} />
+
         {/* New period form */}
         {showNewPeriod && (
           <form
