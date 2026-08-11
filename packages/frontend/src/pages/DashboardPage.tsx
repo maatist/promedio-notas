@@ -53,13 +53,14 @@ export default function DashboardPage() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load upcoming grades
-  useEffect(() => {
-    const loadUpcoming = async () => {
-      const data = await upcomingService.getUpcomingGrades();
-      setUpcomingGrades(data);
-    };
-    loadUpcoming();
+  const loadUpcoming = useCallback(async () => {
+    const data = await upcomingService.getUpcomingGrades();
+    setUpcomingGrades(data);
   }, []);
+
+  useEffect(() => {
+    loadUpcoming();
+  }, [loadUpcoming]);
 
   // Load subjects when period changes
   const loadSubjects = useCallback(async () => {
@@ -138,6 +139,7 @@ export default function DashboardPage() {
     await gradeService.create(componentId, payload);
     toast.success(t.toast.gradeCreated);
     await loadSubjects();
+    await loadUpcoming();
   };
 
   const handleUpdateGrade = async (
@@ -147,12 +149,14 @@ export default function DashboardPage() {
     await gradeService.update(id, payload);
     toast.success(t.toast.gradeUpdated);
     await loadSubjects();
+    await loadUpcoming();
   };
 
   const handleDeleteGrade = async (id: string) => {
     await gradeService.delete(id);
     toast.success(t.toast.gradeDeleted);
     await loadSubjects();
+    await loadUpcoming();
   };
 
   const openEditModal = (subject: SubjectWithDetails) => {
