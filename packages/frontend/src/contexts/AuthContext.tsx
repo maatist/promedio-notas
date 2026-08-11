@@ -7,7 +7,9 @@ interface AuthContextType {
   token: string | null;
   loading: boolean;
   login: (username: string, password: string) => Promise<void>;
-  register: (username: string, password: string) => Promise<void>;
+  register: (username: string, password: string, email?: string) => Promise<void>;
+  loginWithGoogle: (credential: string) => Promise<void>;
+  updateProfile: (data: { email?: string }) => Promise<void>;
   logout: () => void;
 }
 
@@ -65,10 +67,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const register = useCallback(async (username: string, password: string) => {
+  const register = useCallback(async (username: string, password: string, email?: string) => {
     isAuthenticating.current = true;
     try {
-      const response = await authService.register(username, password);
+      const response = await authService.register(username, password, email);
       setToken(response.token);
       setUser(response.user);
       localStorage.setItem('token', response.token);
@@ -76,6 +78,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       isAuthenticating.current = false;
     }
+  }, []);
+
+  const loginWithGoogle = useCallback(async (credential: string) => {
+    isAuthenticating.current = true;
+    try {
+      const response = await authService.loginWithGoogle(credential);
+      setToken(response.token);
+      setUser(response.user);
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify(response.user));
+    } finally {
+      isAuthenticating.current = false;
+    }
+  }, []);
+
+  const updateProfile = useCallback(async (data: { email?: string }) => {
+    const updatedUser = await authService.updateProfile(data);
+    setUser(updatedUser as User);
+    localStorage.setItem('user', JSON.stringify(updatedUser));
   }, []);
 
   const logout = useCallback(() => {
@@ -86,7 +107,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, loading, login, register, loginWithGoogle, updateProfile, logout }}>
       {children}
     </AuthContext.Provider>
   );

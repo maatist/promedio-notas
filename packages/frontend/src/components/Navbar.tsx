@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Plus, LogOut, BookOpen, ChevronDown } from 'lucide-react';
+import { Plus, LogOut, BookOpen, ChevronDown, UserCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useI18n } from '../i18n';
 import ThemeToggle from './ThemeToggle';
 import LanguageToggle from './LanguageToggle';
+import ProfileModal from './ProfileModal';
 import type { Period } from '@promedio-notas/shared';
 
 interface NavbarProps {
@@ -24,6 +25,7 @@ export default function Navbar({
   const { user, logout } = useAuth();
   const { t } = useI18n();
   const [periodMenuOpen, setPeriodMenuOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
 
   return (
     <nav className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-primary-200 dark:border-secondary-800">
@@ -90,7 +92,21 @@ export default function Navbar({
             <LanguageToggle />
             <ThemeToggle />
             <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
-              <span className="hidden sm:inline">{user?.username}</span>
+              <button
+                onClick={() => setProfileModalOpen(true)}
+                className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-lg hover:bg-primary-100 dark:hover:bg-secondary-800 transition-colors"
+                aria-label={t.profile.title}
+              >
+                <UserCircle className="h-4 w-4" />
+                <span>{user?.username}</span>
+              </button>
+              <button
+                onClick={() => setProfileModalOpen(true)}
+                className="sm:hidden p-2 rounded-full hover:bg-primary-100 dark:hover:bg-secondary-800 transition-colors"
+                aria-label={t.profile.title}
+              >
+                <UserCircle className="h-4 w-4" />
+              </button>
               <button
                 onClick={logout}
                 className="p-2 rounded-full hover:bg-primary-100 dark:hover:bg-secondary-800 transition-colors"
@@ -102,6 +118,7 @@ export default function Navbar({
           </div>
         </div>
       </div>
+      <ProfileModal open={profileModalOpen} onClose={() => setProfileModalOpen(false)} />
     </nav>
   );
 }

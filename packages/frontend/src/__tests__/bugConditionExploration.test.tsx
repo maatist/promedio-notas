@@ -58,7 +58,7 @@ describe('Bug Condition Exploration — Login Race Condition', () => {
    * **Validates: Requirements 1.1**
    */
   it('1a: login should keep token and user set even when /auth/me rejects', async () => {
-    const mockUser = { id: 'user-1', username: 'testuser', createdAt: new Date() };
+    const mockUser = { id: 'user-1', username: 'testuser', email: null, authProvider: 'local', createdAt: new Date() };
     const mockToken = 'valid-jwt-token-123';
 
     // Login succeeds

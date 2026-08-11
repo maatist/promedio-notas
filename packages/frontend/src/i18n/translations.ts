@@ -18,6 +18,7 @@ export const translations = {
       passwordMismatch: 'Las contrasenas no coinciden',
       errorInvalid: 'Usuario o contrasena incorrectos',
       errorGeneric: 'Error al procesar la solicitud',
+      forgotPasswordLink: '¿Olvidaste tu contraseña?',
     },
     nav: {
       newSubject: 'Nueva Asignatura',
@@ -89,6 +90,41 @@ export const translations = {
       periodCreated: 'Periodo creado',
       error: 'Ocurrio un error',
     },
+    profile: {
+      title: 'Perfil',
+      email: 'Correo electrónico',
+      emailPlaceholder: 'tu@email.com',
+      save: 'Guardar',
+      emailUpdated: 'Correo actualizado',
+      emailConflict: 'Este correo ya está en uso',
+    },
+    forgotPassword: {
+      title: 'Recuperar contraseña',
+      description: 'Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña',
+      submit: 'Enviar enlace',
+      success: 'Si existe una cuenta con ese correo, recibirás un enlace de recuperación',
+      backToLogin: 'Volver al inicio de sesión',
+    },
+    resetPassword: {
+      title: 'Restablecer contraseña',
+      newPassword: 'Nueva contraseña',
+      confirmPassword: 'Confirmar contraseña',
+      submit: 'Restablecer',
+      success: 'Contraseña restablecida correctamente',
+      invalidToken: 'El enlace es inválido o ha expirado',
+      mismatch: 'Las contraseñas no coinciden',
+    },
+    google: {
+      signIn: 'Iniciar sesión con Google',
+      error: 'Error al iniciar sesión con Google',
+      orDivider: 'o',
+    },
+    emailPrompt: {
+      title: 'Configura tu correo',
+      description: 'Agrega un correo electrónico para poder recuperar tu contraseña en caso de olvidarla',
+      skip: 'Ahora no',
+      save: 'Guardar',
+    },
   },
   en: {
     app: {
@@ -109,6 +145,7 @@ export const translations = {
       passwordMismatch: 'Passwords do not match',
       errorInvalid: 'Invalid username or password',
       errorGeneric: 'Error processing request',
+      forgotPasswordLink: 'Forgot your password?',
     },
     nav: {
       newSubject: 'New Subject',
@@ -180,6 +217,41 @@ export const translations = {
       periodCreated: 'Period created',
       error: 'An error occurred',
     },
+    profile: {
+      title: 'Profile',
+      email: 'Email',
+      emailPlaceholder: 'you@email.com',
+      save: 'Save',
+      emailUpdated: 'Email updated',
+      emailConflict: 'This email is already in use',
+    },
+    forgotPassword: {
+      title: 'Forgot password',
+      description: "Enter your email and we'll send you a link to reset your password",
+      submit: 'Send link',
+      success: "If an account with that email exists, you'll receive a recovery link",
+      backToLogin: 'Back to login',
+    },
+    resetPassword: {
+      title: 'Reset password',
+      newPassword: 'New password',
+      confirmPassword: 'Confirm password',
+      submit: 'Reset',
+      success: 'Password reset successfully',
+      invalidToken: 'This link is invalid or has expired',
+      mismatch: 'Passwords do not match',
+    },
+    google: {
+      signIn: 'Sign in with Google',
+      error: 'Error signing in with Google',
+      orDivider: 'or',
+    },
+    emailPrompt: {
+      title: 'Set up your email',
+      description: 'Add an email address so you can recover your password if you forget it',
+      skip: 'Not now',
+      save: 'Save',
+    },
   },
 } as const;
 
@@ -201,6 +273,7 @@ export type TranslationKeys = {
     passwordMismatch: string;
     errorInvalid: string;
     errorGeneric: string;
+    forgotPasswordLink: string;
   };
   nav: {
     newSubject: string;
@@ -271,5 +344,40 @@ export type TranslationKeys = {
     gradeDeleted: string;
     periodCreated: string;
     error: string;
+  };
+  profile: {
+    title: string;
+    email: string;
+    emailPlaceholder: string;
+    save: string;
+    emailUpdated: string;
+    emailConflict: string;
+  };
+  forgotPassword: {
+    title: string;
+    description: string;
+    submit: string;
+    success: string;
+    backToLogin: string;
+  };
+  resetPassword: {
+    title: string;
+    newPassword: string;
+    confirmPassword: string;
+    submit: string;
+    success: string;
+    invalidToken: string;
+    mismatch: string;
+  };
+  google: {
+    signIn: string;
+    error: string;
+    orDivider: string;
+  };
+  emailPrompt: {
+    title: string;
+    description: string;
+    skip: string;
+    save: string;
   };
 };

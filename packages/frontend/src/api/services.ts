@@ -12,12 +12,20 @@ export const authService = {
     const { data } = await apiClient.post('/auth/login', { username, password });
     return data.data;
   },
-  register: async (username: string, password: string): Promise<AuthResponse> => {
-    const { data } = await apiClient.post('/auth/register', { username, password });
+  register: async (username: string, password: string, email?: string): Promise<AuthResponse> => {
+    const { data } = await apiClient.post('/auth/register', { username, password, email });
     return data.data;
   },
   me: async () => {
     const { data } = await apiClient.get('/auth/me');
+    return data.data;
+  },
+  loginWithGoogle: async (credential: string): Promise<AuthResponse> => {
+    const { data } = await apiClient.post('/auth/google', { credential });
+    return data.data;
+  },
+  updateProfile: async (profileData: { email?: string }): Promise<{ id: string; username: string; email: string | null; authProvider: string; createdAt: Date }> => {
+    const { data } = await apiClient.put('/auth/profile', profileData);
     return data.data;
   },
 };

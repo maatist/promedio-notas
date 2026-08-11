@@ -3,14 +3,17 @@ import toast from 'react-hot-toast';
 import type { Period, SubjectWithDetails } from '@promedio-notas/shared';
 import { periodService, subjectService, gradeService } from '../api/services';
 import { useI18n } from '../i18n';
+import { useAuth } from '../contexts/AuthContext';
 import Navbar from '../components/Navbar';
 import SubjectCard from '../components/SubjectCard';
 import AddSubjectModal from '../components/AddSubjectModal';
 import EditSubjectModal from '../components/EditSubjectModal';
+import EmailPromptModal from '../components/EmailPromptModal';
 import { BookOpen } from 'lucide-react';
 
 export default function DashboardPage() {
   const { t } = useI18n();
+  const { user } = useAuth();
   const [periods, setPeriods] = useState<Period[]>([]);
   const [selectedPeriod, setSelectedPeriod] = useState<Period | null>(null);
   const [subjects, setSubjects] = useState<SubjectWithDetails[]>([]);
@@ -20,6 +23,14 @@ export default function DashboardPage() {
   const [editingSubject, setEditingSubject] = useState<SubjectWithDetails | null>(null);
   const [showNewPeriod, setShowNewPeriod] = useState(false);
   const [newPeriodName, setNewPeriodName] = useState('');
+  const [showEmailPrompt, setShowEmailPrompt] = useState(false);
+
+  // Show email prompt if user has no email and hasn't dismissed it this session
+  useEffect(() => {
+    if (user && !user.email && !sessionStorage.getItem('emailPromptDismissed')) {
+      setShowEmailPrompt(true);
+    }
+  }, [user]);
 
   // Load periods
   useEffect(() => {
@@ -249,6 +260,13 @@ export default function DashboardPage() {
           setEditingSubject(null);
         }}
         onSave={handleUpdateSubject}
+      />
+      <EmailPromptModal
+        open={showEmailPrompt}
+        onClose={() => {
+          setShowEmailPrompt(false);
+          sessionStorage.setItem('emailPromptDismissed', 'true');
+        }}
       />
     </div>
   );

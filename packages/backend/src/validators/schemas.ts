@@ -9,11 +9,32 @@ export const registerSchema = z.object({
     .string()
     .min(6, 'Password must be at least 6 characters')
     .max(100, 'Password must be at most 100 characters'),
+  email: z.string().email('Invalid email format').optional(),
 });
 
 export const loginSchema = z.object({
   username: z.string().min(1, 'Username is required'),
   password: z.string().min(1, 'Password is required'),
+});
+
+export const updateProfileSchema = z.object({
+  email: z.string().email('Invalid email format').optional(),
+});
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email('Invalid email format'),
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string().uuid('Invalid token format'),
+  password: z
+    .string()
+    .min(6, 'Password must be at least 6 characters')
+    .max(100, 'Password must be at most 100 characters'),
+});
+
+export const googleAuthSchema = z.object({
+  credential: z.string().min(1, 'Google credential is required'),
 });
 
 export const createPeriodSchema = z.object({

@@ -2,6 +2,13 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import App from '../App';
 
+// Mock @react-oauth/google to avoid needing GoogleOAuthProvider in tests
+vi.mock('@react-oauth/google', () => ({
+  GoogleOAuthProvider: ({ children }: { children: React.ReactNode }) => children,
+  GoogleLogin: () => <button>Sign in with Google</button>,
+  useGoogleLogin: () => vi.fn(),
+}));
+
 // Mock matchMedia for theme detection
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -28,7 +35,9 @@ describe('App', () => {
   it('shows username and password labels on login page', () => {
     render(<App />);
     expect(screen.getByText(/Username/i)).toBeDefined();
-    expect(screen.getByText(/Password/i)).toBeDefined();
+    // "Password" appears in both the label and "Forgot your password?" link
+    const passwordElements = screen.getAllByText(/Password/i);
+    expect(passwordElements.length).toBeGreaterThanOrEqual(1);
   });
 
   it('shows login and register tabs', () => {

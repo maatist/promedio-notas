@@ -165,6 +165,37 @@ Desde `packages/frontend`:
 | `npm run build` | Build de produccion |
 | `npm run preview` | Preview del build de produccion |
 
+## Variables de Entorno
+
+El proyecto requiere las siguientes variables de entorno. Copia `.env.example` a `.env` y configura los valores:
+
+| Variable | Descripcion | Requerida |
+|----------|-------------|-----------|
+| `DATABASE_URL` | Connection string de PostgreSQL (Neon, Supabase o local) | Si |
+| `JWT_SECRET` | Clave secreta para firmar tokens JWT | Si |
+| `PORT` | Puerto del servidor backend (default: 3001) | No |
+| `BREVO_API_KEY` | API key de [Brevo](https://brevo.com) para envio de emails | Si (para recovery) |
+| `GOOGLE_CLIENT_ID` | Google OAuth Client ID (backend) | Si (para Google login) |
+| `FRONTEND_URL` | URL del frontend para enlaces de reset de contraseña | Si (para recovery) |
+| `VITE_GOOGLE_CLIENT_ID` | Google OAuth Client ID (frontend, mismo valor) | Si (para Google login) |
+| `VITE_API_URL` | URL del API (opcional con proxy de Vite en dev) | No |
+
+### Configuracion de Brevo
+
+1. Crea una cuenta en [brevo.com](https://brevo.com)
+2. Genera una API key desde el dashboard (SMTP & API > API Keys)
+3. Configura `BREVO_API_KEY` en tu `.env`
+
+### Configuracion de Google OAuth
+
+1. Ve a [Google Cloud Console](https://console.cloud.google.com/)
+2. Crea un proyecto o selecciona uno existente
+3. Habilita la API de Google Identity
+4. Crea credenciales OAuth 2.0 (tipo: Web application)
+5. Agrega `http://localhost:5173` en "Authorized JavaScript origins" (desarrollo)
+6. Agrega tu dominio de produccion en "Authorized JavaScript origins"
+7. Copia el Client ID y configuralo en `GOOGLE_CLIENT_ID` y `VITE_GOOGLE_CLIENT_ID`
+
 ## Estructura del Proyecto
 
 ```
@@ -264,6 +295,10 @@ Todas las rutas (excepto auth) requieren el header `Authorization: Bearer <token
 3. **Configura las variables de entorno** en Vercel:
    - `DATABASE_URL` - Connection string de tu base de datos PostgreSQL (Neon recomendado)
    - `JWT_SECRET` - Una clave secreta segura para firmar tokens
+   - `BREVO_API_KEY` - API key de Brevo para envio de emails de recuperacion
+   - `GOOGLE_CLIENT_ID` - Client ID de Google OAuth (backend)
+   - `FRONTEND_URL` - URL del frontend para enlaces de reset (ej: `https://tu-app.vercel.app`)
+   - `VITE_GOOGLE_CLIENT_ID` - Client ID de Google OAuth (frontend, mismo valor que `GOOGLE_CLIENT_ID`)
    - `VERCEL=1` - Se establece automaticamente por Vercel
 
 4. **Despliega:**
