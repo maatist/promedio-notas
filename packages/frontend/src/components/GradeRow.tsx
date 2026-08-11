@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Trash2, Check, X, Calendar, FileText } from 'lucide-react';
+import { Check, X, Calendar, FileText, ChevronRight } from 'lucide-react';
 import type { Grade } from '@promedio-notas/shared';
 import { useI18n } from '../i18n';
 import type { Locale } from '../i18n/translations';
@@ -16,7 +16,6 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
   const { t, locale } = useI18n();
   const [editing, setEditing] = useState<'name' | 'value' | 'weight' | 'date' | 'description' | null>(null);
   const [editValue, setEditValue] = useState('');
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
 
   const startEdit = (field: 'name' | 'value' | 'weight' | 'date' | 'description') => {
@@ -24,7 +23,6 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
     if (field === 'name') setEditValue(grade.name);
     else if (field === 'value') setEditValue(grade.value?.toString() ?? '');
     else if (field === 'date') {
-      // Normalize full ISO datetime to YYYY-MM-DD for the date input
       const dateVal = grade.date ?? '';
       setEditValue(dateVal.includes('T') ? dateVal.split('T')[0] : dateVal);
     }
@@ -70,15 +68,6 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
     if (e.key === 'Escape') cancelEdit();
   };
 
-  const handleDelete = async () => {
-    if (!confirmDelete) {
-      setConfirmDelete(true);
-      setTimeout(() => setConfirmDelete(false), 3000);
-      return;
-    }
-    await onDelete(grade.id);
-  };
-
   const valueColor = grade.value !== null
     ? grade.value >= 4.0
       ? 'text-green-600 dark:text-green-400'
@@ -87,12 +76,9 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
 
   return (
     <>
-    <tr
-      className="border-b border-primary-100 dark:border-secondary-800 last:border-0 hover:bg-primary-50/50 dark:hover:bg-secondary-900/50 transition-colors cursor-pointer sm:cursor-default"
-      onClick={() => { if (!editing) setDetailOpen(true); }}
-    >
+    <tr className="border-b border-primary-100 dark:border-secondary-800 last:border-0 hover:bg-primary-50/50 dark:hover:bg-secondary-900/50 transition-colors">
       {/* Name */}
-      <td className="py-2 px-3" onClick={(e) => e.stopPropagation()}>
+      <td className="py-2 px-3">
         {editing === 'name' ? (
           <div className="flex items-center gap-1">
             <input
@@ -115,7 +101,7 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
         )}
       </td>
       {/* Date */}
-      <td className="py-2 px-3 text-center" onClick={(e) => e.stopPropagation()}>
+      <td className="py-2 px-3 text-center">
         {editing === 'date' ? (
           <input
             type="date"
@@ -141,7 +127,7 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
         )}
       </td>
       {/* Value */}
-      <td className="py-2 px-3 text-center" onClick={(e) => e.stopPropagation()}>
+      <td className="py-2 px-3 text-center">
         {editing === 'value' ? (
           <div className="flex items-center justify-center gap-1">
             <input
@@ -167,7 +153,7 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
         )}
       </td>
       {/* Weight */}
-      <td className="py-2 px-3 text-center" onClick={(e) => e.stopPropagation()}>
+      <td className="py-2 px-3 text-center">
         {editing === 'weight' ? (
           <div className="flex items-center justify-center gap-1">
             <input
@@ -192,8 +178,8 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
           </button>
         )}
       </td>
-      {/* Description */}
-      <td className="hidden sm:table-cell py-2 px-2 text-center" onClick={(e) => e.stopPropagation()}>
+      {/* Description (desktop only) */}
+      <td className="hidden sm:table-cell py-2 px-2 text-center">
         {editing === 'description' ? (
           <textarea
             value={editValue}
@@ -220,8 +206,8 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
           </button>
         )}
       </td>
-      {/* Actions */}
-      <td className="py-2 px-2 text-center" onClick={(e) => e.stopPropagation()}>
+      {/* Detail button */}
+      <td className="py-2 px-2 text-center">
         {editing ? (
           <div className="flex items-center justify-center gap-1">
             <button onClick={saveEdit} className="p-1 text-green-500 hover:text-green-700">
@@ -233,15 +219,11 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
           </div>
         ) : (
           <button
-            onClick={handleDelete}
-            className={`p-1 rounded transition-colors ${
-              confirmDelete
-                ? 'text-red-600 bg-red-50 dark:bg-red-900/30'
-                : 'text-gray-400 hover:text-red-500 dark:hover:text-red-400'
-            }`}
-            title={confirmDelete ? t.grade.deleteConfirm : t.grade.deleteGrade}
+            onClick={() => setDetailOpen(true)}
+            className="p-1 rounded text-gray-400 hover:text-secondary-500 dark:hover:text-secondary-400 transition-colors"
+            title={t.grade.descriptionLabel}
           >
-            <Trash2 className="h-3.5 w-3.5" />
+            <ChevronRight className="h-4 w-4" />
           </button>
         )}
       </td>
@@ -251,6 +233,7 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
       open={detailOpen}
       onClose={() => setDetailOpen(false)}
       onUpdate={onUpdate}
+      onDelete={onDelete}
     />
     </>
   );

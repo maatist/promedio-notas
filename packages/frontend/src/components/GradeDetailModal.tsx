@@ -1,6 +1,6 @@
 import { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { X, Calendar, FileText, Check, Pencil } from 'lucide-react';
+import { X, Calendar, FileText, Check, Pencil, Trash2 } from 'lucide-react';
 import type { Grade } from '@promedio-notas/shared';
 import { useI18n } from '../i18n';
 import type { Locale } from '../i18n/translations';
@@ -13,12 +13,14 @@ interface GradeDetailModalProps {
   open: boolean;
   onClose: () => void;
   onUpdate: (id: string, payload: { name?: string; value?: number | null; weightPercentage?: number; date?: string | null; description?: string | null }) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
 }
 
-export default function GradeDetailModal({ grade, open, onClose, onUpdate }: GradeDetailModalProps) {
+export default function GradeDetailModal({ grade, open, onClose, onUpdate, onDelete }: GradeDetailModalProps) {
   const { t, locale } = useI18n();
   const [editingField, setEditingField] = useState<EditableField | null>(null);
   const [editValue, setEditValue] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   if (!grade) return null;
 
@@ -94,6 +96,17 @@ export default function GradeDetailModal({ grade, open, onClose, onUpdate }: Gra
       saveEdit();
     }
     if (e.key === 'Escape') cancelEdit();
+  };
+
+  const handleDelete = async () => {
+    if (!confirmDelete) {
+      setConfirmDelete(true);
+      setTimeout(() => setConfirmDelete(false), 3000);
+      return;
+    }
+    await onDelete(grade.id);
+    setConfirmDelete(false);
+    onClose();
   };
 
   const valueColor = grade.value !== null
@@ -274,7 +287,7 @@ export default function GradeDetailModal({ grade, open, onClose, onUpdate }: Gra
                 </div>
 
                 {/* Description */}
-                <div>
+                <div className="mb-5">
                   <label className="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-1.5">
                     <FileText className="h-3.5 w-3.5" />
                     {t.grade.descriptionLabel}
@@ -310,6 +323,21 @@ export default function GradeDetailModal({ grade, open, onClose, onUpdate }: Gra
                       )}
                     </button>
                   )}
+                </div>
+
+                {/* Delete */}
+                <div className="pt-4 border-t border-primary-100 dark:border-secondary-700">
+                  <button
+                    onClick={handleDelete}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      confirmDelete
+                        ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                        : 'text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20'
+                    }`}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    {confirmDelete ? t.grade.deleteConfirm : t.grade.deleteGrade}
+                  </button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>

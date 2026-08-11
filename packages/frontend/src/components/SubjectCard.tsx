@@ -44,7 +44,7 @@ function calculateExemptionNeeded(subject: SubjectWithDetails): number | null {
     if (!allComponentsFullyAssigned || !hasPendingGrade) return null;
     if (totalWeightedRemaining === 0) return null;
 
-    const needed = (subject.exemptionGrade - totalWeightedContribution) / totalWeightedRemaining;
+    const needed = (subject.exemptionGrade - 0.05 - totalWeightedContribution) / totalWeightedRemaining;
     return needed;
   } else {
     // Simple subject - single component
@@ -72,7 +72,7 @@ function calculateExemptionNeeded(subject: SubjectWithDetails): number | null {
     if (!hasPendingGrade) return null;
     if (remainingWeight === 0) return null;
 
-    const needed = (subject.exemptionGrade - gradedContribution) / remainingWeight;
+    const needed = (subject.exemptionGrade - 0.05 - gradedContribution) / remainingWeight;
     return needed;
   }
 }
@@ -250,22 +250,25 @@ export default function SubjectCard({
             const needed = calculateExemptionNeeded(subject);
             if (needed === null) return null;
 
+            // Round up to 1 decimal (minimum grade you need to get, considering grades are in tenths)
+            const neededRounded = Math.ceil(needed * 10) / 10;
+
             let colorClass: string;
             let displayText: string;
 
-            if (needed <= 1.0) {
+            if (neededRounded <= 1.0) {
               // Already meets exemption with any grade
               colorClass = 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800';
               displayText = t.subject.exemptionAchieved;
-            } else if (needed > 7.0) {
+            } else if (neededRounded > 7.0) {
               colorClass = 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800';
               displayText = t.subject.exemptionImpossible;
-            } else if (needed >= 6.0) {
+            } else if (neededRounded >= 6.0) {
               colorClass = 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800';
-              displayText = t.subject.needForExemption.replace('{grade}', needed.toFixed(1));
+              displayText = t.subject.needForExemption.replace('{grade}', neededRounded.toFixed(1));
             } else {
               colorClass = 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800';
-              displayText = t.subject.needForExemption.replace('{grade}', needed.toFixed(1));
+              displayText = t.subject.needForExemption.replace('{grade}', neededRounded.toFixed(1));
             }
 
             return (
