@@ -29,14 +29,7 @@ export default function Navbar({
   return (
     <nav className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-primary-200 dark:border-secondary-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center">
-            <span className="text-lg font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">
-              {t.app.name}
-            </span>
-          </div>
-
+        <div className="flex items-center justify-between h-14">
           {/* Period Selector */}
           <div className="relative">
             <button
