@@ -21,7 +21,11 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
     setEditing(field);
     if (field === 'name') setEditValue(grade.name);
     else if (field === 'value') setEditValue(grade.value?.toString() ?? '');
-    else if (field === 'date') setEditValue(grade.date ?? '');
+    else if (field === 'date') {
+      // Normalize full ISO datetime to YYYY-MM-DD for the date input
+      const dateVal = grade.date ?? '';
+      setEditValue(dateVal.includes('T') ? dateVal.split('T')[0] : dateVal);
+    }
     else if (field === 'description') setEditValue(grade.description ?? '');
     else setEditValue(grade.weightPercentage.toString());
   };

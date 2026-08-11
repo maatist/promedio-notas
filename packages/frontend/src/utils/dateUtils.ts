@@ -1,10 +1,13 @@
 /**
- * Formats an ISO date string (YYYY-MM-DD) to a localized short date format.
+ * Formats an ISO date string to a localized short date format.
+ * Accepts both "YYYY-MM-DD" and full ISO datetime "YYYY-MM-DDTHH:mm:ss.sssZ".
  * - 'es' locale: day/month/year (e.g., "15/3/2025")
  * - 'en' locale: month/day/year (e.g., "3/15/2025")
  */
 export function formatGradeDate(isoDate: string, locale: 'es' | 'en'): string {
-  const date = new Date(isoDate + 'T00:00:00');
+  // Extract just the date part (YYYY-MM-DD) if a full datetime is provided
+  const datePart = isoDate.includes('T') ? isoDate.split('T')[0] : isoDate;
+  const date = new Date(datePart + 'T00:00:00');
   return date.toLocaleDateString(locale === 'es' ? 'es-CL' : 'en-US', {
     day: 'numeric',
     month: 'numeric',
