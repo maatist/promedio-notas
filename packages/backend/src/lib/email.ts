@@ -105,11 +105,22 @@ export async function sendPasswordResetEmail(
     );
   }
 
-  await brevo.transactionalEmails.sendTransacEmail({
-    sender: { name: 'Promedio Notas', email: 'noreply@promedionotas.com' },
-    to: [{ email: to }],
-    subject: 'Recupera tu contrase\u00f1a - Promedio Notas',
-    htmlContent: getResetEmailHtml(resetUrl),
-    textContent: getResetEmailText(resetUrl),
-  });
+  const senderEmail = process.env.BREVO_SENDER_EMAIL || 'noreply@promedionotas.com';
+  const senderName = process.env.BREVO_SENDER_NAME || 'Promedio Notas';
+
+  console.log(`[email] Sending password reset email to: ${to}, sender: ${senderEmail}`);
+
+  try {
+    const result = await brevo.transactionalEmails.sendTransacEmail({
+      sender: { name: senderName, email: senderEmail },
+      to: [{ email: to }],
+      subject: 'Recupera tu contrase\u00f1a - Promedio Notas',
+      htmlContent: getResetEmailHtml(resetUrl),
+      textContent: getResetEmailText(resetUrl),
+    });
+    console.log('[email] Email sent successfully:', JSON.stringify(result));
+  } catch (error) {
+    console.error('[email] Brevo API error:', error);
+    throw error;
+  }
 }
