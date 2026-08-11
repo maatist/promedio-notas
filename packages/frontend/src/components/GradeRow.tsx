@@ -4,6 +4,7 @@ import type { Grade } from '@promedio-notas/shared';
 import { useI18n } from '../i18n';
 import type { Locale } from '../i18n/translations';
 import { formatGradeDate } from '../utils/dateUtils';
+import GradeDetailModal from './GradeDetailModal';
 
 interface GradeRowProps {
   grade: Grade;
@@ -16,6 +17,7 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
   const [editing, setEditing] = useState<'name' | 'value' | 'weight' | 'date' | 'description' | null>(null);
   const [editValue, setEditValue] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [detailOpen, setDetailOpen] = useState(false);
 
   const startEdit = (field: 'name' | 'value' | 'weight' | 'date' | 'description') => {
     setEditing(field);
@@ -84,9 +86,13 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
     : 'text-gray-400';
 
   return (
-    <tr className="border-b border-primary-100 dark:border-secondary-800 last:border-0 hover:bg-primary-50/50 dark:hover:bg-secondary-900/50 transition-colors">
+    <>
+    <tr
+      className="border-b border-primary-100 dark:border-secondary-800 last:border-0 hover:bg-primary-50/50 dark:hover:bg-secondary-900/50 transition-colors cursor-pointer sm:cursor-default"
+      onClick={() => { if (!editing) setDetailOpen(true); }}
+    >
       {/* Name */}
-      <td className="py-2 px-3">
+      <td className="py-2 px-3" onClick={(e) => e.stopPropagation()}>
         {editing === 'name' ? (
           <div className="flex items-center gap-1">
             <input
@@ -109,7 +115,7 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
         )}
       </td>
       {/* Date */}
-      <td className="py-2 px-3 text-center">
+      <td className="py-2 px-3 text-center" onClick={(e) => e.stopPropagation()}>
         {editing === 'date' ? (
           <input
             type="date"
@@ -135,7 +141,7 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
         )}
       </td>
       {/* Value */}
-      <td className="py-2 px-3 text-center">
+      <td className="py-2 px-3 text-center" onClick={(e) => e.stopPropagation()}>
         {editing === 'value' ? (
           <div className="flex items-center justify-center gap-1">
             <input
@@ -161,7 +167,7 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
         )}
       </td>
       {/* Weight */}
-      <td className="py-2 px-3 text-center">
+      <td className="py-2 px-3 text-center" onClick={(e) => e.stopPropagation()}>
         {editing === 'weight' ? (
           <div className="flex items-center justify-center gap-1">
             <input
@@ -187,7 +193,7 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
         )}
       </td>
       {/* Description */}
-      <td className="py-2 px-2 text-center">
+      <td className="hidden sm:table-cell py-2 px-2 text-center" onClick={(e) => e.stopPropagation()}>
         {editing === 'description' ? (
           <textarea
             value={editValue}
@@ -215,7 +221,7 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
         )}
       </td>
       {/* Actions */}
-      <td className="py-2 px-2 text-center">
+      <td className="py-2 px-2 text-center" onClick={(e) => e.stopPropagation()}>
         {editing ? (
           <div className="flex items-center justify-center gap-1">
             <button onClick={saveEdit} className="p-1 text-green-500 hover:text-green-700">
@@ -240,5 +246,12 @@ export default function GradeRow({ grade, onUpdate, onDelete }: GradeRowProps) {
         )}
       </td>
     </tr>
+    <GradeDetailModal
+      grade={grade}
+      open={detailOpen}
+      onClose={() => setDetailOpen(false)}
+      onUpdate={onUpdate}
+    />
+    </>
   );
 }

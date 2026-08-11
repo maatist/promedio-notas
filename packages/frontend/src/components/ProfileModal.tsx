@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { X, User } from 'lucide-react';
+import { X, User, LogOut, Languages } from 'lucide-react';
 import { useI18n } from '../i18n';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
@@ -11,8 +11,8 @@ interface ProfileModalProps {
 }
 
 export default function ProfileModal({ open, onClose }: ProfileModalProps) {
-  const { t } = useI18n();
-  const { user, updateProfile } = useAuth();
+  const { t, locale, setLocale } = useI18n();
+  const { user, updateProfile, logout } = useAuth();
   const [email, setEmail] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -139,6 +139,24 @@ export default function ProfileModal({ open, onClose }: ProfileModalProps) {
                     </button>
                   </div>
                 </form>
+
+                {/* Language & Logout */}
+                <div className="mt-5 pt-4 border-t border-primary-100 dark:border-secondary-700 flex items-center justify-between">
+                  <button
+                    onClick={() => setLocale(locale === 'es' ? 'en' : 'es')}
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary-100 dark:bg-secondary-800 hover:bg-primary-200 dark:hover:bg-secondary-700 transition-colors text-sm font-medium text-gray-600 dark:text-gray-300"
+                  >
+                    <Languages className="h-4 w-4" />
+                    <span className="uppercase">{locale}</span>
+                  </button>
+                  <button
+                    onClick={logout}
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors text-sm font-medium"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    {t.nav.logout}
+                  </button>
+                </div>
               </Dialog.Panel>
             </Transition.Child>
           </div>

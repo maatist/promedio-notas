@@ -203,7 +203,7 @@ export default function SubjectCard({
                           <th className="text-center py-1 px-3 font-medium">{t.grade.dateLabel}</th>
                           <th className="text-center py-1 px-3 font-medium">{t.subject.grade}</th>
                           <th className="text-center py-1 px-3 font-medium">{t.subject.weight}</th>
-                          <th className="text-center py-1 px-2 font-medium w-10">{t.grade.descriptionLabel}</th>
+                          <th className="hidden sm:table-cell text-center py-1 px-2 font-medium w-10">{t.grade.descriptionLabel}</th>
                           <th className="text-center py-1 px-2 font-medium w-10"></th>
                         </tr>
                       </thead>
