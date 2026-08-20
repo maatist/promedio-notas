@@ -143,6 +143,37 @@ export const translations = {
       today: 'Hoy',
       tomorrow: 'Mañana',
     },
+    offline: {
+      statusOffline: 'Sin conexión',
+      statusPending: '{count} cambios pendientes',
+      synced: '{count} cambios sincronizados',
+      queuedAction: 'Se guardará cuando vuelvas a tener conexión',
+    },
+    share: {
+      button: 'Compartir',
+      modalTitle: 'Compartir asignatura',
+      linkLabel: 'Enlace para compartir',
+      copyButton: 'Copiar enlace',
+      copiedToast: 'Enlace copiado al portapapeles',
+      expiresAt: 'Expira el {date}',
+      generating: 'Generando enlace...',
+      errorGenerate: 'Error al generar el enlace',
+      import: {
+        title: 'Importar asignatura',
+        preview: 'Vista previa de la estructura',
+        selectPeriod: 'Seleccionar período destino',
+        confirmButton: 'Importar asignatura',
+        importing: 'Importando...',
+        successToast: 'Asignatura importada exitosamente',
+        errorNotFound: 'El enlace no es válido',
+        errorExpired: 'El enlace ha expirado',
+        errorForbidden: 'No tienes acceso a este período',
+        errorGeneric: 'Error al importar la asignatura',
+        components: 'Componentes',
+        grades: 'Evaluaciones',
+        noDate: 'Sin fecha',
+      },
+    },
   },
   en: {
     app: {
@@ -287,6 +318,37 @@ export const translations = {
       daysRemaining: 'in {n} days',
       today: 'Today',
       tomorrow: 'Tomorrow',
+    },
+    offline: {
+      statusOffline: 'Offline',
+      statusPending: '{count} pending changes',
+      synced: '{count} changes synced',
+      queuedAction: 'Will be saved when you reconnect',
+    },
+    share: {
+      button: 'Share',
+      modalTitle: 'Share subject',
+      linkLabel: 'Share link',
+      copyButton: 'Copy link',
+      copiedToast: 'Link copied to clipboard',
+      expiresAt: 'Expires on {date}',
+      generating: 'Generating link...',
+      errorGenerate: 'Error generating link',
+      import: {
+        title: 'Import subject',
+        preview: 'Structure preview',
+        selectPeriod: 'Select target period',
+        confirmButton: 'Import subject',
+        importing: 'Importing...',
+        successToast: 'Subject imported successfully',
+        errorNotFound: 'This link is not valid',
+        errorExpired: 'This link has expired',
+        errorForbidden: "You don't have access to this period",
+        errorGeneric: 'Error importing subject',
+        components: 'Components',
+        grades: 'Evaluations',
+        noDate: 'No date',
+      },
     },
   },
 } as const;
@@ -433,5 +495,36 @@ export type TranslationKeys = {
     daysRemaining: string;
     today: string;
     tomorrow: string;
+  };
+  offline: {
+    statusOffline: string;
+    statusPending: string;
+    synced: string;
+    queuedAction: string;
+  };
+  share: {
+    button: string;
+    modalTitle: string;
+    linkLabel: string;
+    copyButton: string;
+    copiedToast: string;
+    expiresAt: string;
+    generating: string;
+    errorGenerate: string;
+    import: {
+      title: string;
+      preview: string;
+      selectPeriod: string;
+      confirmButton: string;
+      importing: string;
+      successToast: string;
+      errorNotFound: string;
+      errorExpired: string;
+      errorForbidden: string;
+      errorGeneric: string;
+      components: string;
+      grades: string;
+      noDate: string;
+    };
   };
 };

@@ -5,6 +5,7 @@ import authRoutes from './routes/auth';
 import periodRoutes from './routes/periods';
 import subjectRoutes from './routes/subjects';
 import gradeRoutes from './routes/grades';
+import shareRoutes from './routes/share';
 import { errorHandler } from './middleware/errorHandler';
 
 dotenv.config();
@@ -32,6 +33,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/periods', periodRoutes);
 app.use('/api', subjectRoutes);
 app.use('/api', gradeRoutes);
+app.use('/api', shareRoutes);
 
 // Global error handler
 app.use(errorHandler);

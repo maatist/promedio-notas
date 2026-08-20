@@ -1,0 +1,284 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Add ShareToken model to Prisma schema and generate migration": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253126
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266261109
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266487263
+      }
+    ],
+    "2.1 Create token validation helper and Zod schemas": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253164
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266491768
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266596505
+      }
+    ],
+    "3.1 Implement POST `/api/share/subjects/:subjectId` (generate share link)": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253199
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266603067
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266697839
+      }
+    ],
+    "3.2 Implement GET `/api/share/:token/preview` (preview structure)": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253235
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266603892
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266698665
+      }
+    ],
+    "3.3 Implement POST `/api/share/:token/import` (import structure)": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253283
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266604862
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266699522
+      }
+    ],
+    "3.4 Register share routes in the backend entry point": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253316
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266700561
+      }
+    ],
+    "4. Checkpoint - Backend complete": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253350
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266709827
+      }
+    ],
+    "5.1 Add share API functions and TypeScript types": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253382
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266492567
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266597315
+      }
+    ],
+    "6.1 Create ShareSubjectModal component": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253417
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266714744
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266809030
+      }
+    ],
+    "6.2 Add share button to SubjectCard": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253451
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266844945
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266970176
+      }
+    ],
+    "7.1 Create ImportSubjectPage component": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253490
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266845694
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266970877
+      }
+    ],
+    "7.2 Add period selector and import confirmation flow": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253536
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266971827
+      }
+    ],
+    "7.3 Register `/import/:token` route in the frontend router": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253570
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266972871
+      }
+    ],
+    "8.1 Add share-related i18n keys to translations": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253608
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266493449
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266598169
+      }
+    ],
+    "9. Final checkpoint - Ensure all tests pass": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266253641
+      },
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266977540
+      }
+    ],
+    "1. Database schema and migration": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266487343
+      }
+    ],
+    "2. Backend: Share token validation helper and schemas": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266596565
+      }
+    ],
+    "5. Frontend: API service and types": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266597366
+      }
+    ],
+    "8. Internationalization": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266598223
+      }
+    ],
+    "3. Backend: Share route endpoints": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266700622
+      }
+    ],
+    "6. Frontend: Share modal component": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266970232
+      }
+    ],
+    "7. Frontend: Import page": [
+      {
+        "executionId": "6fafb4dc-7b27-47c8-9fab-992cbd44b089",
+        "chatSessionId": "sess_e783c2c7-d8f4-4ed7-9867-f011f406280e",
+        "timestamp": 1787266972936
+      }
+    ]
+  }
+}

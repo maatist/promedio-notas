@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronRight, Edit2, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronRight, Edit2, Share2, Trash2 } from 'lucide-react';
 import type { SubjectWithDetails } from '@promedio-notas/shared';
 import { useI18n } from '../i18n';
 import GradeRow from './GradeRow';
 import AddGradeForm from './AddGradeForm';
+import ShareSubjectModal from './ShareSubjectModal';
 
 /**
  * Calculates the minimum grade needed in all pending evaluations (assuming the same
@@ -96,6 +97,7 @@ export default function SubjectCard({
 }: SubjectCardProps) {
   const [expanded, setExpanded] = useState(true);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const { t } = useI18n();
 
   // Use backend-computed average instead of duplicating calculation logic
@@ -116,6 +118,7 @@ export default function SubjectCard({
   };
 
   return (
+    <>
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-primary-100 dark:border-secondary-800 overflow-hidden transition-all hover:shadow-md">
       {/* Header */}
       <div
@@ -142,6 +145,13 @@ export default function SubjectCard({
             {average !== null ? average.toFixed(1) : '-'}
           </span>
           <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setShareOpen(true)}
+              className="p-1.5 rounded-full hover:bg-primary-100 dark:hover:bg-secondary-800 text-gray-400 hover:text-secondary-500 transition-colors"
+              title={t.share.button}
+            >
+              <Share2 className="h-3.5 w-3.5" />
+            </button>
             <button
               onClick={() => onEdit(subject)}
               className="p-1.5 rounded-full hover:bg-primary-100 dark:hover:bg-secondary-800 text-gray-400 hover:text-secondary-500 transition-colors"
@@ -280,5 +290,12 @@ export default function SubjectCard({
         </div>
       )}
     </div>
+    <ShareSubjectModal
+      subjectId={subject.id}
+      subjectName={subject.name}
+      isOpen={shareOpen}
+      onClose={() => setShareOpen(false)}
+    />
+    </>
   );
 }

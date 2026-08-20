@@ -8,7 +8,9 @@ import LoginPage from './pages/LoginPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import DashboardPage from './pages/DashboardPage';
+import ImportSubjectPage from './pages/ImportSubjectPage';
 import InstallPrompt from './components/InstallPrompt';
+import OfflineIndicator from './components/OfflineIndicator';
 
 function App() {
   return (
@@ -28,10 +30,12 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path="/import/:token" element={<ImportSubjectPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </BrowserRouter>
           <InstallPrompt />
+          <OfflineIndicator />
           <Toaster
             position="bottom-center"
             toastOptions={{

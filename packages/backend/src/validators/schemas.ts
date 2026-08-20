@@ -161,6 +161,10 @@ export const createGradeSchema = z.object({
   description: gradeDescriptionSchema.nullable().optional(),
 });
 
+export const importSubjectSchema = z.object({
+  periodId: z.string().uuid('Invalid period ID'),
+});
+
 export const updateGradeSchema = z.object({
   name: z
     .string()

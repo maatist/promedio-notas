@@ -7,6 +7,56 @@ import type {
   UpcomingGrade,
 } from '@promedio-notas/shared';
 
+// Share Types
+export interface ShareLinkResponse {
+  shareLink: string;
+  token: string;
+  expiresAt: string;
+}
+
+export interface SubjectPreviewGrade {
+  name: string;
+  weightPercentage: number;
+  order: number;
+  date: string | null;
+  description: string | null;
+}
+
+export interface SubjectPreviewComponent {
+  name: string;
+  weightPercentage: number;
+  grades: SubjectPreviewGrade[];
+}
+
+export interface SubjectPreview {
+  subjectName: string;
+  isComposite: boolean;
+  exemptionGrade: number | null;
+  components: SubjectPreviewComponent[];
+}
+
+export interface ImportedSubject {
+  id: string;
+  name: string;
+  periodId: string;
+  isComposite: boolean;
+  exemptionGrade: number | null;
+  components: Array<{
+    id: string;
+    name: string;
+    weightPercentage: number;
+    grades: Array<{
+      id: string;
+      name: string;
+      value: null;
+      weightPercentage: number;
+      order: number;
+      date: string | null;
+      description: string | null;
+    }>;
+  }>;
+}
+
 // Auth Service
 export const authService = {
   login: async (username: string, password: string): Promise<AuthResponse> => {
@@ -115,5 +165,21 @@ export const upcomingService = {
       // Fail silently - don't break the dashboard
       return [];
     }
+  },
+};
+
+// Share Service
+export const shareService = {
+  generateLink: async (subjectId: string): Promise<ShareLinkResponse> => {
+    const { data } = await apiClient.post(`/share/subjects/${subjectId}`);
+    return data.data;
+  },
+  getPreview: async (token: string): Promise<SubjectPreview> => {
+    const { data } = await apiClient.get(`/share/${token}/preview`);
+    return data.data;
+  },
+  importSubject: async (token: string, periodId: string): Promise<ImportedSubject> => {
+    const { data } = await apiClient.post(`/share/${token}/import`, { periodId });
+    return data.data;
   },
 };
